@@ -11,7 +11,7 @@
           @click="toggleLeftDrawer"
         />
         <q-toolbar-title>
-          Happy Memory
+          Memory
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -37,14 +37,24 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <p v-if="pending">Checking login status...</p>
+      <p v-if="error"
+        >Something bad happened when trying to check login status.</p
+      >
+      <router-view v-if="success && isAuthenticated" />
+      <div v-if="success && !isAuthenticated">
+        <p>You are not logged in.</p>
+        <login-button></login-button>
+      </div>
     </q-page-container>
   </q-layout>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import EssentialLink from 'components/EssentialLink.vue';
+import { useAuthStore, useStartAuthListener } from 'stores/auth';
+import { signInUserThroughGoogle, signOutUser } from 'src/firebase';
 
 const linksList = [
   {
@@ -65,6 +75,16 @@ const linksList = [
     icon: 'add',
     link: '/flashcard/create',
   },
+  {
+    title: 'Login',
+    icon: 'login',
+    onClick: () => signInUserThroughGoogle(),
+  },
+  {
+    title: 'Logout',
+    icon: 'logout',
+    onClick: () => signOutUser(),
+  },
 ];
 
 export default defineComponent({
@@ -75,6 +95,13 @@ export default defineComponent({
   },
 
   setup() {
+    useStartAuthListener();
+    const authStore = useAuthStore();
+    const pending = computed(() => authStore.loading === 'PENDING');
+    const success = computed(() => authStore.loading === 'SUCCESS');
+    const error = computed(() => authStore.loading === 'ERROR');
+    const isAuthenticated = computed(() => authStore.isAuthenticated);
+
     const leftDrawerOpen = ref(false);
 
     return {
@@ -83,6 +110,10 @@ export default defineComponent({
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
+      pending,
+      success,
+      error,
+      isAuthenticated,
     };
   },
 });

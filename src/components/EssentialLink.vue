@@ -1,5 +1,7 @@
 <template>
   <q-item
+    :clickable="onClick ? true : undefined"
+    @click="onClick"
     :to="link"
   >
     <q-item-section
@@ -16,31 +18,12 @@
   </q-item>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'EssentialLink',
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
-
-    caption: {
-      type: String,
-      default: '',
-    },
-
-    link: {
-      type: String,
-      default: '#',
-    },
-
-    icon: {
-      type: String,
-      default: '',
-    },
-  },
-});
+<script setup lang="ts">
+defineProps<{
+  title: string;
+  caption?: string;
+  link?: string;
+  icon: string;
+  onClick?:() => void
+}>();
 </script>
