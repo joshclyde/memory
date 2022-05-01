@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { startFirebaseEventListening } from "src/firebase";
 
-// import { useTagsStore } from './tags';
+import { useTagsStore } from "./tags";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -48,17 +48,17 @@ export const useAuthStore = defineStore({
 const isListening = false;
 export const useStartAuthListener = () => {
   const authStore = useAuthStore();
-  // const tagsStore = useTagsStore();
+  const tagsStore = useTagsStore();
   if (!isListening) {
     authStore.pending();
     startFirebaseEventListening(
       ({ uid }) => {
         authStore.success(uid);
-        // tagsStore.fetchTags();
+        tagsStore.fetchTags();
       },
       () => {
         authStore.success(null);
-        // tagsStore.clearTags();
+        tagsStore.clearTags();
       }
     );
   }

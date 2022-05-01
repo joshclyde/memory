@@ -34,7 +34,6 @@
       <router-view v-if="success && isAuthenticated" />
       <div v-if="success && !isAuthenticated">
         <p>You are not logged in.</p>
-        <login-button></login-button>
       </div>
     </q-page-container>
   </q-layout>
