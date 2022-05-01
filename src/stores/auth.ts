@@ -1,11 +1,11 @@
-import { defineStore } from 'pinia';
-import { startFirebaseEventListening } from 'src/firebase';
+import { defineStore } from "pinia";
+import { startFirebaseEventListening } from "src/firebase";
 
 // import { useTagsStore } from './tags';
 
 interface AuthState {
   isAuthenticated: boolean;
-  loading: null | 'PENDING' | 'SUCCESS' | 'ERROR';
+  loading: null | "PENDING" | "SUCCESS" | "ERROR";
   uid: null | string;
 }
 
@@ -16,7 +16,7 @@ const initialAuthState: AuthState = {
 };
 
 export const useAuthStore = defineStore({
-  id: 'auth',
+  id: "auth",
   state: () => initialAuthState,
   getters: {
     getIsAuthenticated: (state) => state.isAuthenticated,
@@ -24,12 +24,12 @@ export const useAuthStore = defineStore({
   },
   actions: {
     pending() {
-      this.loading = 'PENDING';
+      this.loading = "PENDING";
       this.uid = null;
       this.isAuthenticated = false;
     },
     success(uid: string | null) {
-      this.loading = 'SUCCESS';
+      this.loading = "SUCCESS";
       this.uid = uid;
       if (uid) {
         this.isAuthenticated = true;
@@ -38,7 +38,7 @@ export const useAuthStore = defineStore({
       }
     },
     failure() {
-      this.loading = 'ERROR';
+      this.loading = "ERROR";
       this.uid = null;
       this.isAuthenticated = false;
     },
@@ -59,7 +59,7 @@ export const useStartAuthListener = () => {
       () => {
         authStore.success(null);
         // tagsStore.clearTags();
-      },
+      }
     );
   }
 };

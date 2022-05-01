@@ -2,10 +2,10 @@ import {
   GoogleAuthProvider,
   signInWithRedirect,
   signOut as authSignOut,
-} from 'firebase/auth';
-import type { User } from 'firebase/auth';
+} from "firebase/auth";
+import type { User } from "firebase/auth";
 
-import { auth } from '../app';
+import { auth } from "../app";
 
 export const signInUserThroughGoogle = () => {
   const provider = new GoogleAuthProvider();
@@ -27,7 +27,7 @@ export const throwOrGetCurrentUserUID = () => {
   if (uid != null && uid.length > 0) {
     return uid;
   }
-  throw new Error('UID was either nully or had a length of zero!');
+  throw new Error("UID was either nully or had a length of zero!");
 };
 export const getIsUserSignedIn = () => Boolean(getCurrentUser());
 export const consoleLogCurrentUser = () => console.log(getCurrentUser()?.uid);
@@ -44,14 +44,15 @@ export const consoleLogCurrentUser = () => console.log(getCurrentUser()?.uid);
 */
 export const startFirebaseEventListening = (
   onAuthStateSignedIn: (user: User) => void,
-  onAuthStateSignedOut: () => void,
-) => new Promise<void>((resolve) => {
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      onAuthStateSignedIn(user);
-    } else {
-      onAuthStateSignedOut();
-    }
-    resolve();
+  onAuthStateSignedOut: () => void
+) =>
+  new Promise<void>((resolve) => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        onAuthStateSignedIn(user);
+      } else {
+        onAuthStateSignedOut();
+      }
+      resolve();
+    });
   });
-});

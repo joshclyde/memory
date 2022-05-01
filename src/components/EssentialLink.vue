@@ -1,13 +1,6 @@
 <template>
-  <q-item
-    :clickable="onClick ? true : undefined"
-    @click="onClick"
-    :to="link"
-  >
-    <q-item-section
-      v-if="icon"
-      avatar
-    >
+  <q-item :clickable="onClick ? true : undefined" @click="onClick" :to="link">
+    <q-item-section v-if="icon" avatar>
       <q-icon :name="icon" />
     </q-item-section>
 
@@ -24,6 +17,6 @@ defineProps<{
   caption?: string;
   link?: string;
   icon: string;
-  onClick?:() => void
+  onClick?: () => void;
 }>();
 </script>

@@ -9,11 +9,12 @@ import {
   collection,
   // where,
   // documentId,
-} from 'firebase/firestore';
-import { firestore } from '../app';
-import { throwOrGetCurrentUserUID } from '../core';
+} from "firebase/firestore";
+import { firestore } from "../app";
+import { throwOrGetCurrentUserUID } from "../core";
 
-const getUserTagsCollectionRef = (uid: string) => collection(firestore, `/users/${uid}/tags`);
+const getUserTagsCollectionRef = (uid: string) =>
+  collection(firestore, `/users/${uid}/tags`);
 
 export const getTags = async (): Promise<Record<string, { name: string }>> => {
   const uid = throwOrGetCurrentUserUID();
