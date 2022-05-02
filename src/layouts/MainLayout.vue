@@ -53,6 +53,12 @@ const linksList = [
     link: "/",
   },
   {
+    title: "Review",
+    caption: "Study your flashcards",
+    icon: "lightbulb",
+    link: "/review",
+  },
+  {
     title: "Create Tag",
     caption: "Create a new tag",
     icon: "add",
