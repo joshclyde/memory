@@ -39,28 +39,12 @@ export const useFlashcardsStore = defineStore({
     },
   },
   getters: {
-    // getSetById: (state) => {
-    //   return (setId: string) => state.flashcardSets[setId];
-    // },
-    // getLengthOfSetById: (state) => {
-    //   return (setId: string) =>
-    //     Object.keys(state.flashcardSets[setId].flashcards).length;
-    // },
-    // getFrontOfCard: (state) => {
-    //   return (setId: string, cardId: string) =>
-    //     state.flashcardSets[setId].flashcards[cardId].front;
-    // },
-    // getBackOfCard: (state) => {
-    //   return (setId: string, cardId: string) =>
-    //     state.flashcardSets[setId].flashcards[cardId].back;
-    // },
-    // getFrontOfCardByIndex: (state) => {
-    //   return (setId: string, index: number) =>
-    //     Object.values(state.flashcardSets[setId].flashcards)[index].front;
-    // },
-    // getBackOfCardByIndex: (state) => {
-    //   return (setId: string, index: number) =>
-    //     Object.values(state.flashcardSets[setId].flashcards)[index].back;
-    // },
+    getIdsByTagId: (state) => {
+      return (tagId: string) => {
+        return Object.keys(state.flashcards).filter((id) =>
+          state.flashcards[id].tags.includes(tagId)
+        );
+      };
+    },
   },
 });
