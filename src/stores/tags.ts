@@ -42,5 +42,13 @@ export const useTagsStore = defineStore({
         };
       });
     },
+    tagIds: (state) => {
+      return Object.keys(state.tags);
+    },
+    getTagById: (state) => {
+      return (id: string) => {
+        return state.tags[id];
+      };
+    },
   },
 });
