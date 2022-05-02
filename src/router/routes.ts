@@ -9,6 +9,10 @@ const routes: RouteRecordRaw[] = [
         path: "/tag/create",
         component: () => import("pages/CreateTagPage.vue"),
       },
+      {
+        path: "/flashcard/create",
+        component: () => import("pages/CreateFlashcardPage.vue"),
+      },
       { path: "", component: () => import("pages/IndexPage.vue") },
     ],
   },

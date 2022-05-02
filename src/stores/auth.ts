@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { startFirebaseEventListening } from "src/firebase";
 
 import { useTagsStore } from "./tags";
+import { useFlashcardsStore } from "./flashcards";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -49,16 +50,23 @@ const isListening = false;
 export const useStartAuthListener = () => {
   const authStore = useAuthStore();
   const tagsStore = useTagsStore();
+  const flashcardsStore = useFlashcardsStore();
   if (!isListening) {
     authStore.pending();
     startFirebaseEventListening(
-      ({ uid }) => {
+      async ({ uid }) => {
+        /*
+          Eventually, I could do this better so that fetching the data is not
+          attached to authentication. But for now, this is just simpler.
+        */
+        await tagsStore.fetchTags();
+        await flashcardsStore.fetch();
         authStore.success(uid);
-        tagsStore.fetchTags();
       },
       () => {
         authStore.success(null);
         tagsStore.clearTags();
+        flashcardsStore.clear();
       }
     );
   }

@@ -33,4 +33,14 @@ export const useTagsStore = defineStore({
       delete this.tags[id];
     },
   },
+  getters: {
+    formOptions: (state) => {
+      return Object.entries(state.tags).map(([id, { name }]) => {
+        return {
+          label: name,
+          value: id,
+        };
+      });
+    },
+  },
 });
