@@ -8,10 +8,8 @@ const tag = tagsStore.getTagById(props.tagId);
 
 <template>
   <q-card>
-    <q-card-section>
-      <h5>
-        {{ tag.name }}
-      </h5>
+    <q-card-section class="text-h6">
+      {{ tag.name }}
     </q-card-section>
     <q-separator dark />
     <q-card-actions>

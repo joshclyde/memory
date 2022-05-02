@@ -1,5 +1,5 @@
 <template>
-  <h4>Create Flashcard</h4>
+  <h1>Create Flashcard</h1>
   <q-form @submit="onSubmit">
     <q-option-group v-model="tags" type="checkbox" :options="tagFormOptions">
     </q-option-group>

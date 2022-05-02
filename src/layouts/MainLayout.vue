@@ -27,17 +27,27 @@
     </q-drawer>
 
     <q-page-container>
-      <p v-if="pending">Checking login status...</p>
-      <p v-if="error">
-        Something bad happened when trying to check login status.
-      </p>
-      <router-view v-if="success && isAuthenticated" />
-      <div v-if="success && !isAuthenticated">
-        <p>You are not logged in.</p>
+      <div class="container">
+        <p v-if="pending">Checking login status...</p>
+        <p v-if="error">
+          Something bad happened when trying to check login status.
+        </p>
+        <router-view v-if="success && isAuthenticated" />
+        <div v-if="success && !isAuthenticated">
+          <p>You are not logged in.</p>
+        </div>
       </div>
     </q-page-container>
   </q-layout>
 </template>
+
+<style scoped>
+.container {
+  max-width: 512px;
+  margin: auto;
+  padding-top: 16px;
+}
+</style>
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";

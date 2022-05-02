@@ -37,7 +37,7 @@ const currentFlashcard = computed(() => {
 
 <template>
   <p>{{ textCurrentFlashcard }}</p>
-  <q-card>
+  <q-card class="q-my-md q-pa-md card">
     <h6>{{ isFront ? "Front" : "Back" }}</h6>
     {{ isFront ? currentFlashcard.front : currentFlashcard.back }}
   </q-card>
@@ -76,5 +76,9 @@ const currentFlashcard = computed(() => {
 
 .next-button {
   grid-column: 3;
+}
+
+.card {
+  min-height: 256px;
 }
 </style>

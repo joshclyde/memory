@@ -6,10 +6,11 @@ const tagsStore = useTagsStore();
 </script>
 
 <template>
-  <h4>Review</h4>
+  <h1>Review</h1>
   <ReviewCardVue
     v-for="tagId in tagsStore.tagIds"
     :key="tagId"
     :tag-id="tagId"
+    class="q-my-md"
   ></ReviewCardVue>
 </template>

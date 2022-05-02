@@ -1,4 +1,10 @@
+* {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-weight: 400;
+}
+
+
 // app global css in SCSS form
 h1, h2, h3, h4, h5, h6 {
-  margin: 16px;
+  margin: 0 0 16px;
 }

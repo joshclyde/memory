@@ -1,5 +1,5 @@
 <template>
-  <h4>Create Tag</h4>
+  <h1>Create Tag</h1>
   <q-form @submit="onSubmit">
     <q-input
       filled
