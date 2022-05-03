@@ -1,17 +1,26 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { useTagsStore } from "src/stores/tags";
+import { useFlashcardsStore } from "src/stores/flashcards";
 
 const props = defineProps<{ tagId: string }>();
 const tagsStore = useTagsStore();
+const flashcardsStore = useFlashcardsStore();
+
 const tag = tagsStore.getTagById(props.tagId);
+const count = flashcardsStore.getIdsByTagId(props.tagId).length;
+const textCount = computed(() => `${count} flashcard${count > 1 ? "s" : ""}`);
 </script>
 
 <template>
   <q-card>
-    <q-card-section class="text-h6">
-      {{ tag.name }}
+    <q-card-section>
+      <div class="text-h6">
+        {{ tag.name }}
+      </div>
+      <div>{{ textCount }}</div>
     </q-card-section>
-    <q-separator dark />
+    <q-separator />
     <q-card-actions>
       <q-btn flat :to="`/review/${props.tagId}`">Start Review</q-btn>
     </q-card-actions>

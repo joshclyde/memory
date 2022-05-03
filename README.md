@@ -11,7 +11,6 @@ A memory project
 
 ### 🆕 Features
 
-- add more details to the review cards (how many flashcards)
 - edit flashcard data
 - edit tag name
 - delete tag name
@@ -39,6 +38,7 @@ A memory project
 ### ✅ Completed
 
 - home page. (should just move the review page to home)
+- add more details to the review cards (how many flashcards)
 
 ## Local Development
 
