@@ -2,10 +2,12 @@
 import EssentialLink from "components/EssentialLink.vue";
 import { signInUserThroughGoogle, signOutUser } from "src/firebase";
 import { useLayoutStore } from "src/stores/layout";
+import { useAuthStore } from "src/stores/auth";
 
+const authStore = useAuthStore();
 const layoutStore = useLayoutStore();
 
-const linksList = [
+const list = [
   {
     title: "Home",
     caption: "Study your flashcards",
@@ -24,17 +26,10 @@ const linksList = [
     icon: "add",
     link: "/flashcard/create",
   },
-  {
-    title: "Login",
-    icon: "login",
-    onClick: () => signInUserThroughGoogle(),
-  },
-  {
-    title: "Logout",
-    icon: "logout",
-    onClick: () => signOutUser(),
-  },
 ];
+
+const clickLogin = () => signInUserThroughGoogle();
+const clickLogout = () => signOutUser();
 </script>
 
 <template>
@@ -45,12 +40,21 @@ const linksList = [
     bordered
   >
     <q-list>
-      <q-item-label header> Pages </q-item-label>
-
+      <q-item-label header>Memory</q-item-label>
+      <EssentialLink v-for="item in list" :key="item.title" v-bind="item" />
+      <q-separator></q-separator>
       <EssentialLink
-        v-for="link in linksList"
-        :key="link.title"
-        v-bind="link"
+        title="Login"
+        icon="login"
+        :on-click="clickLogin"
+        v-if="authStore.isSuccess && !authStore.isAuthenticated"
+      />
+      <q-item-label header>Settings</q-item-label>
+      <EssentialLink
+        title="Logout"
+        icon="logout"
+        :on-click="clickLogout"
+        v-if="authStore.isSuccess && authStore.isAuthenticated"
       />
     </q-list>
   </q-drawer>

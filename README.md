@@ -20,8 +20,6 @@ A memory project
 - styles on mobile
 - styles in general
 - randomize flashcard order?
-- separation in the drawer
-- conditionally display login/logout
 - make a favicon
 - ios app
 
@@ -39,6 +37,8 @@ A memory project
 
 - home page. (should just move the review page to home)
 - add more details to the review cards (how many flashcards)
+- separation in the drawer
+- conditionally display login/logout
 
 ## Local Development
 

@@ -22,6 +22,7 @@ export const useAuthStore = defineStore({
   getters: {
     getIsAuthenticated: (state) => state.isAuthenticated,
     getLoading: (state) => state.loading,
+    isSuccess: (state) => state.loading === "SUCCESS",
   },
   actions: {
     pending() {
