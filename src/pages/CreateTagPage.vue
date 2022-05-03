@@ -66,7 +66,7 @@ const onSubmit = async () => {
     state.pending = true;
     state.error = null;
     try {
-      await longWait();
+      // await longWait();
       await regular();
       state.text = "";
     } catch (error) {
