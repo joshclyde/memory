@@ -80,5 +80,6 @@ const currentFlashcard = computed(() => {
 
 .card {
   min-height: 256px;
+  white-space: pre-line;
 }
 </style>
