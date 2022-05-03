@@ -14,17 +14,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Pages </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
+    <drawer-component></drawer-component>
 
     <q-page-container>
       <div class="container">
@@ -50,47 +40,16 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
-import EssentialLink from "components/EssentialLink.vue";
+import { defineComponent, computed } from "vue";
+import DrawerComponent from "src/components/DrawerComponent.vue";
 import { useAuthStore, useStartAuthListener } from "stores/auth";
-import { signInUserThroughGoogle, signOutUser } from "src/firebase";
-
-const linksList = [
-  {
-    title: "Home",
-    caption: "Study your flashcards",
-    icon: "home",
-    link: "/",
-  },
-  {
-    title: "Create Tag",
-    caption: "Create a new tag",
-    icon: "add",
-    link: "/tag/create",
-  },
-  {
-    title: "Create Flashcard",
-    caption: "Create a new flashcard",
-    icon: "add",
-    link: "/flashcard/create",
-  },
-  {
-    title: "Login",
-    icon: "login",
-    onClick: () => signInUserThroughGoogle(),
-  },
-  {
-    title: "Logout",
-    icon: "logout",
-    onClick: () => signOutUser(),
-  },
-];
+import { useLayoutStore } from "src/stores/layout";
 
 export default defineComponent({
   name: "MainLayout",
 
   components: {
-    EssentialLink,
+    DrawerComponent,
   },
 
   setup() {
@@ -101,13 +60,11 @@ export default defineComponent({
     const error = computed(() => authStore.loading === "ERROR");
     const isAuthenticated = computed(() => authStore.isAuthenticated);
 
-    const leftDrawerOpen = ref(false);
+    const layoutStore = useLayoutStore();
 
     return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
       toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
+        layoutStore.toggleDrawer();
       },
       pending,
       success,
