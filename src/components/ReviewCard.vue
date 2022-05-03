@@ -9,7 +9,15 @@ const flashcardsStore = useFlashcardsStore();
 
 const tag = tagsStore.getTagById(props.tagId);
 const count = flashcardsStore.getIdsByTagId(props.tagId).length;
-const textCount = computed(() => `${count} flashcard${count > 1 ? "s" : ""}`);
+const textCount = computed(() => {
+  if (count === 0) {
+    return `0 flashcards`;
+  }
+  if (count === 1) {
+    return `1 flashcard`;
+  }
+  return `${count} flashcards`;
+});
 </script>
 
 <template>
