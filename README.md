@@ -2,16 +2,15 @@
 
 A memory project
 
-## Backlog
+## 📝 Backlog
 
-### Important Features
+### 🔥 Important Features
 
 - firebase permissions. (make sure only user can access and edit their data)
 - firebase emulators
 
-### Features
+### 🆕 Features
 
-- home page. (should just move the review page to home)
 - add more details to the review cards (how many flashcards)
 - edit flashcard data
 - edit tag name
@@ -27,15 +26,19 @@ A memory project
 - make a favicon
 - ios app
 
-### "Smart" flashcards
+### 🔎 "Smart" flashcards
 
 - tracking if the user is succeeding/failing at each flashcard
 - presenting this data in some useful way
 
-### Bugs
+### 🐞 Bugs
 
 - return characters are being removed from flashcards
 - the "Home" page in the drawer is always highlighted
+
+### ✅ Completed
+
+- home page. (should just move the review page to home)
 
 ## Local Development
 

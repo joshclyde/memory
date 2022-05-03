@@ -17,11 +17,7 @@ const routes: RouteRecordRaw[] = [
         path: "/review/:tagId",
         component: () => import("pages/ReviewTagPage.vue"),
       },
-      {
-        path: "/review",
-        component: () => import("pages/ReviewPage.vue"),
-      },
-      { path: "", component: () => import("pages/IndexPage.vue") },
+      { path: "", component: () => import("pages/HomePage.vue") },
     ],
   },
 

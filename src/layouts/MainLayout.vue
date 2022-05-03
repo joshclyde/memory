@@ -58,15 +58,9 @@ import { signInUserThroughGoogle, signOutUser } from "src/firebase";
 const linksList = [
   {
     title: "Home",
-    caption: "Go home",
+    caption: "Study your flashcards",
     icon: "home",
     link: "/",
-  },
-  {
-    title: "Review",
-    caption: "Study your flashcards",
-    icon: "lightbulb",
-    link: "/review",
   },
   {
     title: "Create Tag",
