@@ -2,36 +2,51 @@
 
 A memory project
 
+Explain the useState hook and the syntax.
+
 ## 📝 Backlog
 
 ### 🔥 Important Features
 
+- backups of data
 - firebase permissions. (make sure only user can access and edit their data)
-- firebase emulators
+- firebase emulators (going to get more important as I use production more)
 
 ### 🆕 Features
 
-- edit flashcard data
+#### Functionality
+
+- randomize flashcard order?
 - edit tag name
 - delete tag name
+- edit flashcard data (similar to anki)
 - delete flashcard
+- ios app
+- keyboard shortcuts
+- make sure flashcard actions/buttons on mobile are nice to use
+- order list of tags (alphabetize)
+- allow more than plain text for flashcards (markdown)
+- while reviewing flashcards, would like an option to either edit or mark as need more work done
+
+#### Style
+
 - pick a color pallete
 - dark theme
 - styles on mobile
 - styles in general
-- randomize flashcard order?
 - make a favicon
-- ios app
+- once you get a lot of tags, the review page is a long scroll. could def condense this.
 
 ### 🔎 "Smart" flashcards
 
+- i'm gonna get a lot of flashcards, and it'll probs be hours to go through every one. gotta fix this.
 - tracking if the user is succeeding/failing at each flashcard
 - presenting this data in some useful way
 
 ### 🐞 Bugs
 
-- return characters are being removed from flashcards
 - the "Home" page in the drawer is always highlighted
+- spaces at beginning of sentence not being respected on a flashcard
 
 ### ✅ Completed
 
@@ -39,6 +54,7 @@ A memory project
 - add more details to the review cards (how many flashcards)
 - separation in the drawer
 - conditionally display login/logout
+- return characters are being removed from flashcards
 
 ## Local Development
 
