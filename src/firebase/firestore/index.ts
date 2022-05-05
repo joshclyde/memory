@@ -1,9 +1,10 @@
 import {
-  // doc,
+  doc,
   addDoc,
   // setDoc,
   // getDoc,
   getDocs,
+  updateDoc,
   // query,
   // updateDoc,
   collection,
@@ -19,13 +20,16 @@ const getUserTagsCollectionRef = (uid: string) =>
 const getUserFlashcardsCollectionRef = (uid: string) =>
   collection(firestore, `/users/${uid}/flashcards`);
 
+const getUserFlashcardsDocumentRef = (uid: string, flashcardId: string) =>
+  doc(firestore, `/users/${uid}/flashcards/${flashcardId}`);
+
 export const getTags = async (): Promise<Record<string, { name: string }>> => {
   const uid = throwOrGetCurrentUserUID();
   const snapshot = await getDocs(getUserTagsCollectionRef(uid));
   const tags: Record<string, { name: string }> = {};
-  snapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    tags[doc.id] = { name: doc.data().name };
+  snapshot.forEach((_doc) => {
+    // _doc.data() is never undefined for query doc snapshots
+    tags[_doc.id] = { name: _doc.data().name };
   });
   return tags;
 };
@@ -49,12 +53,12 @@ export const getFlashcards = async (): Promise<
     string,
     { front: string; back: string; tags: Array<string> }
   > = {};
-  snapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    flashcards[doc.id] = {
-      front: doc.data().front,
-      back: doc.data().back,
-      tags: doc.data().tags,
+  snapshot.forEach((_doc) => {
+    // _doc.data() is never undefined for query doc snapshots
+    flashcards[_doc.id] = {
+      front: _doc.data().front,
+      back: _doc.data().back,
+      tags: _doc.data().tags,
     };
   });
   return flashcards;
@@ -76,4 +80,23 @@ export const createFlashcard = async ({
     tags,
   });
   return docRef.id;
+};
+
+export const updateFlashcard = async ({
+  id,
+  front,
+  back,
+  tags,
+}: {
+  id: string;
+  front: string;
+  back: string;
+  tags: Array<string>;
+}): Promise<void> => {
+  const uid = throwOrGetCurrentUserUID();
+  await updateDoc(getUserFlashcardsDocumentRef(uid, id), {
+    front,
+    back,
+    tags,
+  });
 };

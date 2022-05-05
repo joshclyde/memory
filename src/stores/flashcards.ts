@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import {
   getFlashcards as getFlashcardsFirestore,
   createFlashcard as createFlashcardFirestore,
+  updateFlashcard as updateFlashcardFirestore,
 } from "src/firebase";
 
 interface FlashcardsState {
@@ -36,6 +37,20 @@ export const useFlashcardsStore = defineStore({
       const id = await createFlashcardFirestore({ front, back, tags });
       this.flashcards[id] = { front, back, tags };
       return id;
+    },
+    async update({
+      id,
+      front,
+      back,
+      tags,
+    }: {
+      id: string;
+      front: string;
+      back: string;
+      tags: Array<string>;
+    }) {
+      await updateFlashcardFirestore({ id, front, back, tags });
+      this.flashcards[id] = { front, back, tags };
     },
   },
   getters: {
