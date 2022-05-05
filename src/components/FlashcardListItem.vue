@@ -10,16 +10,11 @@ const tagsStore = useTagsStore();
 const flashcard = computed(() => {
   return flashcardsStore.flashcards[props.id];
 });
-const captionText = computed(() => {
-  return Object.keys(tagsStore.tags)
-    .filter((tagId) => flashcard.value.tags.includes(tagId))
-    .reduce(
-      (value, tagId) =>
-        value
-          ? `${value}, ${tagsStore.tags[tagId].name}`
-          : tagsStore.tags[tagId].name,
-      ""
-    );
+
+const tags = computed(() => {
+  return Object.entries(tagsStore.tags).filter(([tagId]) =>
+    flashcard.value.tags.includes(tagId)
+  );
 });
 </script>
 
@@ -28,8 +23,10 @@ const captionText = computed(() => {
     <q-item-section>
       <q-item-label>{{ flashcard.front }}</q-item-label>
       <q-item-label caption>
-        <q-icon name="sell"></q-icon>
-        {{ captionText }}
+        <template v-for="(item, index) in tags" :key="item[0]">
+          <q-icon name="sell"></q-icon>
+          {{ `${item[1].name}${index + 1 < tags.length ? " " : ""}` }}
+        </template>
       </q-item-label>
     </q-item-section>
   </q-item>
