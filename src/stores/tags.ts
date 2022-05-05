@@ -42,6 +42,15 @@ export const useTagsStore = defineStore({
         };
       });
     },
+    mapWithKeyValue: (state) => {
+      return <T>(initState: T) => {
+        const retValue: Record<string, T> = {};
+        Object.keys(state.tags).forEach((value) => {
+          retValue[value] = initState;
+        });
+        return retValue;
+      };
+    },
     tagIds: (state) => {
       return Object.keys(state.tags);
     },

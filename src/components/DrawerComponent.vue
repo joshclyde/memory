@@ -26,6 +26,12 @@ const list = [
     icon: "add",
     link: "/flashcard/create",
   },
+  {
+    title: "Edit Flashcard",
+    caption: "Edit any flashcards",
+    icon: "edit",
+    link: "/flashcard/edit",
+  },
 ];
 
 const clickLogin = () => signInUserThroughGoogle();

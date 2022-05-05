@@ -46,5 +46,12 @@ export const useFlashcardsStore = defineStore({
         );
       };
     },
+    filterByTag: (state) => {
+      return (tagIds: Array<string>) => {
+        return Object.keys(state.flashcards).filter((id) =>
+          state.flashcards[id].tags.some((item) => tagIds.includes(item))
+        );
+      };
+    },
   },
 });

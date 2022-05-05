@@ -14,6 +14,14 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/CreateFlashcardPage.vue"),
       },
       {
+        path: "/flashcard/edit/:flashcardId",
+        component: () => import("pages/EditFlashcardByIdPage.vue"),
+      },
+      {
+        path: "/flashcard/edit",
+        component: () => import("pages/EditFlashcardPage.vue"),
+      },
+      {
         path: "/review/:tagId",
         component: () => import("pages/ReviewTagPage.vue"),
       },
