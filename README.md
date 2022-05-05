@@ -14,21 +14,21 @@ Explain the useState hook and the syntax.
 
 ### 🆕 Features
 
-#### Functionality
+#### 🤖 Functionality
 
-- randomize flashcard order?
-- edit tag name
-- delete tag name
-- edit flashcard data (similar to anki)
 - delete flashcard
-- ios app
 - keyboard shortcuts
+- randomize flashcard order?
+- edit tag name (easy to do in firebase console)
+- delete tag name (easy to do in firebase console, except what to do with flashcards?)
+- ios app
 - make sure flashcard actions/buttons on mobile are nice to use
-- order list of tags (alphabetize)
 - allow more than plain text for flashcards (markdown)
+- order list of tags (alphabetize)
 - while reviewing flashcards, would like an option to either edit or mark as need more work done
+- upload svg for a tag
 
-#### Style
+#### 🎨 Style
 
 - pick a color pallete
 - dark theme
@@ -37,11 +37,21 @@ Explain the useState hook and the syntax.
 - make a favicon
 - once you get a lot of tags, the review page is a long scroll. could def condense this.
 
+#### 🏆 Code Quality
+
+- url utilities
+
 ### 🔎 "Smart" flashcards
 
-- i'm gonna get a lot of flashcards, and it'll probs be hours to go through every one. gotta fix this.
+- i'm gonna get a lot of flashcards, and it'll probs be hours to go through every one, so having some
+  way to know how i'm doing would be useful
 - tracking if the user is succeeding/failing at each flashcard
 - presenting this data in some useful way
+
+### 🎩 Fancier flashcards
+
+Allow more than just plain text for flashcards. Markdown would be a good option since a lot
+of the flashcards are going to be code.
 
 ### 🐞 Bugs
 
@@ -55,6 +65,7 @@ Explain the useState hook and the syntax.
 - separation in the drawer
 - conditionally display login/logout
 - return characters are being removed from flashcards
+- edit flashcard data
 
 ## Local Development
 
