@@ -24,7 +24,7 @@ const tags = computed(() => {
       <q-item-label>{{ flashcard.front }}</q-item-label>
       <q-item-label caption>
         <template v-for="(item, index) in tags" :key="item[0]">
-          <q-icon name="sell"></q-icon>
+          <q-icon name="r_sell"></q-icon>
           {{ `${item[1].name}${index + 1 < tags.length ? " " : ""}` }}
         </template>
       </q-item-label>

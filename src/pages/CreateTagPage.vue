@@ -14,7 +14,7 @@
       ]"
     >
       <template v-slot:prepend>
-        <q-icon name="sell" />
+        <q-icon name="r_sell" />
       </template>
     </q-input>
     <p v-if="state.error">{{ state.error }}</p>

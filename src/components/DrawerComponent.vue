@@ -11,25 +11,25 @@ const list = [
   {
     title: "Home",
     caption: "Study your flashcards",
-    icon: "home",
+    icon: "r_home",
     link: "/",
   },
   {
     title: "Create Tag",
     caption: "Create a new tag",
-    icon: "add",
+    icon: "r_add",
     link: "/tag/create",
   },
   {
     title: "Create Flashcard",
     caption: "Create a new flashcard",
-    icon: "add",
+    icon: "r_add",
     link: "/flashcard/create",
   },
   {
     title: "Edit Flashcard",
     caption: "Edit any flashcards",
-    icon: "edit",
+    icon: "r_edit",
     link: "/flashcard/edit",
   },
 ];
