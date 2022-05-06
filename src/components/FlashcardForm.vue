@@ -46,7 +46,11 @@ const regular = async () => {
       delete state.success[timeoutId];
     }, 3000)
   );
-  state.success[timeoutId] = `Successfully created.`;
+  if (!props.id) {
+    state.success[timeoutId] = `Successfully created.`;
+  } else {
+    state.success[timeoutId] = `Successfully edited.`;
+  }
 };
 
 const longWait = () => {
