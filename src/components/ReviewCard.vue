@@ -30,7 +30,8 @@ const textCount = computed(() => {
     </q-card-section>
     <q-separator />
     <q-card-actions>
-      <q-btn flat :to="`/review/${props.tagId}`">Start Review</q-btn>
+      <q-btn flat :to="`/review/${props.tagId}`">Review</q-btn>
+      <q-btn flat :to="`/tag/edit/${props.tagId}`">Edit</q-btn>
     </q-card-actions>
   </q-card>
 </template>

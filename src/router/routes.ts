@@ -6,6 +6,10 @@ const routes: RouteRecordRaw[] = [
     component: () => import("layouts/MainLayout.vue"),
     children: [
       {
+        path: "/tag/edit/:tagId",
+        component: () => import("pages/EditTagByIdPage.vue"),
+      },
+      {
         path: "/tag/create",
         component: () => import("pages/CreateTagPage.vue"),
       },

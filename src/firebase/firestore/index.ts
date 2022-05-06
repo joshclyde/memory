@@ -17,6 +17,9 @@ import { throwOrGetCurrentUserUID } from "../core";
 const getUserTagsCollectionRef = (uid: string) =>
   collection(firestore, `/users/${uid}/tags`);
 
+const getUserTagsDocumentRef = (uid: string, tagId: string) =>
+  doc(firestore, `/users/${uid}/tags/${tagId}`);
+
 const getUserFlashcardsCollectionRef = (uid: string) =>
   collection(firestore, `/users/${uid}/flashcards`);
 
@@ -42,6 +45,17 @@ export const createTag = async ({
   const uid = throwOrGetCurrentUserUID();
   const docRef = await addDoc(getUserTagsCollectionRef(uid), { name });
   return docRef.id;
+};
+
+export const updateTag = async ({
+  id,
+  name,
+}: {
+  id: string;
+  name: string;
+}): Promise<void> => {
+  const uid = throwOrGetCurrentUserUID();
+  await updateDoc(getUserTagsDocumentRef(uid, id), { name });
 };
 
 export const getFlashcards = async (): Promise<

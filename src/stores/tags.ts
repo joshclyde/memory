@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import {
   getTags as getTagsFirestore,
   createTag as createTagFirestore,
+  updateTag as updateTagFirestore,
 } from "src/firebase";
 
 type TagsState = {
@@ -26,7 +27,8 @@ export const useTagsStore = defineStore({
       this.tags[id] = { name };
       return id;
     },
-    updateTag(id: string, { name }: { name: string }) {
+    async update({ id, name }: { id: string; name: string }) {
+      await updateTagFirestore({ id, name });
       this.tags[id] = { name };
     },
     deleteTag({ id }: { id: string }) {
