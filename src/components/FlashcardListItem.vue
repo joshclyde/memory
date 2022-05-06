@@ -2,6 +2,7 @@
 import { computed } from "@vue/reactivity";
 import { useFlashcardsStore } from "src/stores/flashcards";
 import { useTagsStore } from "src/stores/tags";
+import { editFlashcardByIdUrl } from "src/utilities/url";
 
 const props = defineProps<{ id: string }>();
 const flashcardsStore = useFlashcardsStore();
@@ -19,7 +20,7 @@ const tags = computed(() => {
 </script>
 
 <template>
-  <q-item :to="`/flashcard/edit/${props.id}`">
+  <q-item :to="editFlashcardByIdUrl(props.id)">
     <q-item-section>
       <q-item-label>{{ flashcard.front }}</q-item-label>
       <q-item-label caption>

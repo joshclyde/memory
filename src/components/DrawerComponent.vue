@@ -3,6 +3,12 @@ import EssentialLink from "components/EssentialLink.vue";
 import { signInUserThroughGoogle, signOutUser } from "src/firebase";
 import { useLayoutStore } from "src/stores/layout";
 import { useAuthStore } from "src/stores/auth";
+import {
+  HOME_URL,
+  CREATE_TAG_URL,
+  CREATE_FLASHCARD_URL,
+  EDIT_FLASHCARD_URL,
+} from "src/utilities/url";
 
 const authStore = useAuthStore();
 const layoutStore = useLayoutStore();
@@ -12,25 +18,25 @@ const list = [
     title: "Home",
     caption: "Study your flashcards",
     icon: "r_home",
-    link: "/",
+    link: HOME_URL,
   },
   {
     title: "Create Tag",
     caption: "Create a new tag",
     icon: "r_add",
-    link: "/tag/create",
+    link: CREATE_TAG_URL,
   },
   {
     title: "Create Flashcard",
     caption: "Create a new flashcard",
     icon: "r_add",
-    link: "/flashcard/create",
+    link: CREATE_FLASHCARD_URL,
   },
   {
     title: "Edit Flashcard",
     caption: "Edit any flashcards",
     icon: "r_edit",
-    link: "/flashcard/edit",
+    link: EDIT_FLASHCARD_URL,
   },
 ];
 

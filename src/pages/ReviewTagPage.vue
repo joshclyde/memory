@@ -2,6 +2,7 @@
 import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useFlashcardsStore } from "src/stores/flashcards";
+import { HOME_URL } from "src/utilities/url";
 
 const route = useRoute();
 const flashcardsStore = useFlashcardsStore();
@@ -53,7 +54,11 @@ const currentFlashcard = computed(() => {
     >
       Next
     </q-btn>
-    <q-btn v-if="!(currentIndex + 1 < count)" class="next-button" to="/">
+    <q-btn
+      v-if="!(currentIndex + 1 < count)"
+      class="next-button"
+      :to="HOME_URL"
+    >
       Finish
     </q-btn>
   </div>

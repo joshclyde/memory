@@ -1,4 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
+import * as UrlUtils from "src/utilities/url";
 
 const routes: RouteRecordRaw[] = [
   {
@@ -6,30 +7,33 @@ const routes: RouteRecordRaw[] = [
     component: () => import("layouts/MainLayout.vue"),
     children: [
       {
-        path: "/tag/edit/:tagId",
-        component: () => import("pages/EditTagByIdPage.vue"),
-      },
-      {
-        path: "/tag/create",
+        path: UrlUtils.CREATE_TAG_URL,
         component: () => import("pages/CreateTagPage.vue"),
       },
       {
-        path: "/flashcard/create",
+        path: UrlUtils.editTagByIdUrl(":tagId"),
+        component: () => import("pages/EditTagByIdPage.vue"),
+      },
+      {
+        path: UrlUtils.CREATE_FLASHCARD_URL,
         component: () => import("pages/CreateFlashcardPage.vue"),
       },
       {
-        path: "/flashcard/edit/:flashcardId",
+        path: UrlUtils.editFlashcardByIdUrl(":flashcardId"),
         component: () => import("pages/EditFlashcardByIdPage.vue"),
       },
       {
-        path: "/flashcard/edit",
+        path: UrlUtils.EDIT_FLASHCARD_URL,
         component: () => import("pages/EditFlashcardPage.vue"),
       },
       {
-        path: "/review/:tagId",
+        path: UrlUtils.reviewTagUrl(":tagId"),
         component: () => import("pages/ReviewTagPage.vue"),
       },
-      { path: "", component: () => import("pages/HomePage.vue") },
+      {
+        path: UrlUtils.HOME_URL,
+        component: () => import("pages/HomePage.vue"),
+      },
     ],
   },
 
