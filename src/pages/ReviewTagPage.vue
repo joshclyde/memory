@@ -54,13 +54,7 @@ const currentFlashcard = computed(() => {
     >
       Next
     </q-btn>
-    <q-btn
-      v-if="!(currentIndex + 1 < count)"
-      class="next-button"
-      :to="HOME_URL"
-    >
-      Finish
-    </q-btn>
+    <q-btn v-else class="next-button" :to="HOME_URL"> Finish </q-btn>
   </div>
 </template>
 
