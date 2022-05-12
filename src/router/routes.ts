@@ -31,6 +31,10 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/ReviewTagPage.vue"),
       },
       {
+        path: UrlUtils.learnTagUrl(":tagId"),
+        component: () => import("pages/LearnTagPage.vue"),
+      },
+      {
         path: UrlUtils.HOME_URL,
         component: () => import("pages/HomePage.vue"),
       },
