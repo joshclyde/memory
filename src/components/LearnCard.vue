@@ -58,7 +58,7 @@ function postHide() {
   <div v-if="finished">You finished!</div>
   <template v-else>
     <p>{{ textCurrentFlashcard }}</p>
-    <q-card flat bordered>
+    <q-card flat bordered class="flashcard-text">
       <q-card-section>{{ front }}</q-card-section>
 
       <q-slide-transition>
@@ -109,3 +109,9 @@ function postHide() {
     </q-card>
   </template>
 </template>
+
+<style scoped>
+.flashcard-text {
+  white-space: pre-line;
+}
+</style>
