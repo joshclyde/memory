@@ -12,20 +12,20 @@ import {
   // documentId,
   Timestamp,
 } from "firebase/firestore";
-import { firestore } from "../app";
+import { db } from "../app";
 import { throwOrGetCurrentUserUID } from "../core";
 
 const getUserTagsCollectionRef = (uid: string) =>
-  collection(firestore, `/users/${uid}/tags`);
+  collection(db, `/users/${uid}/tags`);
 
 const getUserTagsDocumentRef = (uid: string, tagId: string) =>
-  doc(firestore, `/users/${uid}/tags/${tagId}`);
+  doc(db, `/users/${uid}/tags/${tagId}`);
 
 const getUserFlashcardsCollectionRef = (uid: string) =>
-  collection(firestore, `/users/${uid}/flashcards`);
+  collection(db, `/users/${uid}/flashcards`);
 
 const getUserFlashcardsDocumentRef = (uid: string, flashcardId: string) =>
-  doc(firestore, `/users/${uid}/flashcards/${flashcardId}`);
+  doc(db, `/users/${uid}/flashcards/${flashcardId}`);
 
 export const getTags = async (): Promise<Record<string, { name: string }>> => {
   const uid = throwOrGetCurrentUserUID();
