@@ -10,7 +10,7 @@ interface AuthState {
   uid: null | string;
 }
 
-const initialAuthState: AuthState = {
+const initialState: AuthState = {
   isAuthenticated: false,
   uid: null,
   loading: null,
@@ -18,7 +18,7 @@ const initialAuthState: AuthState = {
 
 export const useAuthStore = defineStore({
   id: "auth",
-  state: () => initialAuthState,
+  state: () => initialState,
   getters: {
     getIsAuthenticated: (state) => state.isAuthenticated,
     getLoading: (state) => state.loading,
@@ -56,17 +56,12 @@ export const useStartAuthListener = () => {
     authStore.pending();
     startFirebaseEventListening(
       async ({ uid }) => {
-        /*
-          Eventually, I could do this better so that fetching the data is not
-          attached to authentication. But for now, this is just simpler.
-        */
-        await tagsStore.fetchTags();
-        await flashcardsStore.fetch();
+        await Promise.all([tagsStore.fetch(), flashcardsStore.fetch()]);
         authStore.success(uid);
       },
       () => {
         authStore.success(null);
-        tagsStore.clearTags();
+        tagsStore.clear();
         flashcardsStore.clear();
       }
     );

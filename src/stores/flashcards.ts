@@ -1,50 +1,19 @@
 import { defineStore } from "pinia";
 import {
-  getFlashcards as getFlashcardsFirestore,
-  createFlashcard as createFlashcardFirestore,
-  updateFlashcard as updateFlashcardFirestore,
+  createFlashcard,
+  updateFlashcard,
+  fetchFlashcards,
 } from "src/firebase";
-import { convertTimestampToString } from "src/utilities/firestore";
-import { Timestamp } from "firebase/firestore";
+import {
+  convertComputedFields,
+  convertLastModified,
+} from "src/utilities/firestore";
+import { FirestoreFlashcardUserInput } from "src/firebase/firestore/types";
+import { StateFlashcard } from "./types";
 
 interface FlashcardsState {
-  flashcards: Record<
-    string,
-    {
-      front: string;
-      back: string;
-      tags: Array<string>;
-      createdDate?: string;
-      lastUpdatedDate?: string;
-    }
-  >;
+  flashcards: Record<string, StateFlashcard>;
 }
-
-const convertFirestoreFlashcard = ({
-  front,
-  back,
-  tags,
-  createdDate,
-  lastUpdatedDate,
-}: {
-  front: string;
-  back: string;
-  tags: Array<string>;
-  createdDate?: Timestamp;
-  lastUpdatedDate?: Timestamp;
-}) => {
-  return {
-    front,
-    back,
-    tags,
-    createdDate: createdDate
-      ? convertTimestampToString(createdDate)
-      : undefined,
-    lastUpdatedDate: lastUpdatedDate
-      ? convertTimestampToString(lastUpdatedDate)
-      : undefined,
-  };
-};
 
 const initialState: FlashcardsState = { flashcards: {} };
 
@@ -52,57 +21,27 @@ export const useFlashcardsStore = defineStore({
   id: "flashcards",
   state: () => initialState,
   actions: {
-    async fetch() {
-      const flashcards = await getFlashcardsFirestore();
-      this.flashcards = Object.entries(flashcards).reduce<
-        FlashcardsState["flashcards"]
-      >((acc, [id, firestoreFlashcard]) => {
-        acc[id] = convertFirestoreFlashcard(firestoreFlashcard);
-        return acc;
-      }, {});
-    },
     clear() {
       this.flashcards = {};
     },
-    async create({
-      front,
-      back,
-      tags,
-    }: {
-      front: string;
-      back: string;
-      tags: Array<string>;
-    }) {
-      const [id, firestoreFlashcard] = await createFlashcardFirestore({
-        front,
-        back,
-        tags,
-      });
-      this.flashcards[id] = convertFirestoreFlashcard(firestoreFlashcard);
+    async fetch() {
+      const firestoreFlashcards = await fetchFlashcards();
+      Object.entries(firestoreFlashcards).forEach(
+        ([id, firestoreFlashcard]) => {
+          this.flashcards[id] = convertComputedFields(firestoreFlashcard);
+        }
+      );
+    },
+    async create(data: FirestoreFlashcardUserInput) {
+      const [id, firestoreFlashcard] = await createFlashcard(data);
+      this.flashcards[id] = convertComputedFields(firestoreFlashcard);
       return id;
     },
-    async update({
-      id,
-      front,
-      back,
-      tags,
-    }: {
-      id: string;
-      front: string;
-      back: string;
-      tags: Array<string>;
-    }) {
-      const [, { lastUpdatedDate }] = await updateFlashcardFirestore(id, {
-        front,
-        back,
-        tags,
-      });
+    async update(id: string, data: FirestoreFlashcardUserInput) {
+      const firestoreFlashcard = await updateFlashcard(id, data);
       this.flashcards[id] = {
         ...this.flashcards[id],
-        front,
-        back,
-        tags,
-        lastUpdatedDate: convertTimestampToString(lastUpdatedDate),
+        ...convertLastModified(firestoreFlashcard),
       };
     },
   },

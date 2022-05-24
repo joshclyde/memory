@@ -1,12 +1,14 @@
 import { defineStore } from "pinia";
+import { createTag, updateTag, fetchTags } from "src/firebase";
 import {
-  getTags as getTagsFirestore,
-  createTag as createTagFirestore,
-  updateTag as updateTagFirestore,
-} from "src/firebase";
+  convertComputedFields,
+  convertLastModified,
+} from "src/utilities/firestore";
+import { FirestoreTagUserInput } from "src/firebase/firestore/types";
+import { StateTag } from "./types";
 
 type TagsState = {
-  tags: Record<string, { name: string }>;
+  tags: Record<string, StateTag>;
 };
 
 const initialState: TagsState = { tags: {} };
@@ -15,23 +17,29 @@ export const useTagsStore = defineStore({
   id: "tags",
   state: () => initialState,
   actions: {
-    async fetchTags() {
-      const tags = await getTagsFirestore();
-      this.tags = tags;
-    },
-    clearTags() {
+    clear() {
       this.tags = {};
     },
-    async createTag({ name }: { name: string }) {
-      const id = await createTagFirestore({ name });
-      this.tags[id] = { name };
+    async fetch() {
+      const firestoreTags = await fetchTags();
+      Object.entries(firestoreTags).forEach(([id, firestoreTag]) => {
+        this.tags[id] = convertComputedFields(firestoreTag);
+      });
+    },
+    async create(data: FirestoreTagUserInput) {
+      const [id, firestoreTag] = await createTag(data);
+      this.tags[id] = convertComputedFields(firestoreTag);
       return id;
     },
-    async update({ id, name }: { id: string; name: string }) {
-      await updateTagFirestore({ id, name });
-      this.tags[id] = { name };
+    async update(id: string, data: FirestoreTagUserInput) {
+      const firestoreTag = await updateTag(id, data);
+      this.tags[id] = {
+        ...this.tags[id],
+        ...convertLastModified(firestoreTag),
+      };
     },
-    deleteTag({ id }: { id: string }) {
+    delete(id: string) {
+      // TODO: this probs should delete from firestore as well
       delete this.tags[id];
     },
   },

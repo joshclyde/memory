@@ -1,177 +1,89 @@
-import {
-  doc,
-  addDoc,
-  // setDoc,
-  // getDoc,
-  getDocs,
-  updateDoc,
-  // query,
-  // updateDoc,
-  collection,
-  // where,
-  // documentId,
-  Timestamp,
-} from "firebase/firestore";
-import { db } from "../app";
+import { doc, collection } from "firebase/firestore";
 import { throwOrGetCurrentUserUID } from "../core";
+import {
+  FirestoreTag,
+  FirestoreTagUserInput,
+  FirestoreFlashcard,
+  FirestoreFlashcardUserInput,
+} from "./types";
+import { createDocument, updateDocument, db, fetchCollection } from "./utils";
 
-const getUserTagsCollectionRef = (uid: string) =>
-  collection(db, `/users/${uid}/tags`);
+/*
+  TODO:
 
-const getUserTagsDocumentRef = (uid: string, tagId: string) =>
-  doc(db, `/users/${uid}/tags/${tagId}`);
+  should I be accesing uid within these functions? or should I have the
+  functions in Pinia pass in the Pinia stat's uid?
+*/
+const getTagsCollectionRef = () =>
+  collection(db, `/users/${throwOrGetCurrentUserUID()}/tags`);
 
-const getUserFlashcardsCollectionRef = (uid: string) =>
-  collection(db, `/users/${uid}/flashcards`);
+const getTagsDocumentRef = (tagId: string) =>
+  doc(db, `/users/${throwOrGetCurrentUserUID()}/tags/${tagId}`);
 
-const getUserFlashcardsDocumentRef = (uid: string, flashcardId: string) =>
-  doc(db, `/users/${uid}/flashcards/${flashcardId}`);
+const getFlashcardsCollectionRef = () =>
+  collection(db, `/users/${throwOrGetCurrentUserUID()}/flashcards`);
 
-export const getTags = async (): Promise<Record<string, { name: string }>> => {
-  const uid = throwOrGetCurrentUserUID();
-  const snapshot = await getDocs(getUserTagsCollectionRef(uid));
-  const tags: Record<string, { name: string }> = {};
-  snapshot.forEach((_doc) => {
-    // _doc.data() is never undefined for query doc snapshots
-    tags[_doc.id] = { name: _doc.data().name };
+const getFlashcardsDocumentRef = (flashcardId: string) =>
+  doc(db, `/users/${throwOrGetCurrentUserUID()}/flashcards/${flashcardId}`);
+
+export const createTag = async (
+  data: FirestoreTagUserInput
+): Promise<readonly [string, FirestoreTag]> =>
+  createDocument(getTagsCollectionRef(), data);
+
+export const createFlashcard = (
+  data: FirestoreFlashcardUserInput
+): Promise<readonly [string, FirestoreFlashcard]> =>
+  createDocument(getFlashcardsCollectionRef(), data);
+
+export const updateTag = (
+  id: string,
+  data: FirestoreTagUserInput
+): Promise<Omit<FirestoreTag, "createdDate">> =>
+  updateDocument(getTagsDocumentRef(id), data);
+
+export const updateFlashcard = (
+  id: string,
+  data: FirestoreFlashcardUserInput
+): Promise<Omit<FirestoreFlashcard, "createdDate">> =>
+  updateDocument(getFlashcardsDocumentRef(id), data);
+
+export const fetchTags = async () => {
+  const { fromCache, fromServer } = await fetchCollection(
+    getTagsCollectionRef()
+  );
+
+  const tags: Record<string, FirestoreTag> = {};
+  [fromCache, fromServer].forEach((snapshot) => {
+    snapshot?.forEach((_doc) => {
+      // _doc.data() is never undefined for query doc snapshots
+      tags[_doc.id] = {
+        name: _doc.data().name,
+        createdDate: _doc.data().createdDate,
+        lastModified: _doc.data().lastModified,
+      };
+    });
   });
   return tags;
 };
 
-export const createTag = async ({
-  name,
-}: {
-  name: string;
-}): Promise<string> => {
-  const uid = throwOrGetCurrentUserUID();
-  const docRef = await addDoc(getUserTagsCollectionRef(uid), { name });
-  return docRef.id;
-};
+export const fetchFlashcards = async () => {
+  const { fromCache, fromServer } = await fetchCollection(
+    getFlashcardsCollectionRef()
+  );
 
-export const updateTag = async ({
-  id,
-  name,
-}: {
-  id: string;
-  name: string;
-}): Promise<void> => {
-  const uid = throwOrGetCurrentUserUID();
-  await updateDoc(getUserTagsDocumentRef(uid, id), { name });
-};
-
-export const getFlashcards = async (): Promise<
-  Record<
-    string,
-    {
-      front: string;
-      back: string;
-      tags: Array<string>;
-      /*
-        createdDate and lastUpdatedDate are fields I added retroactively
-        so older flashcards may not contain these fields
-      */
-      createdDate?: Timestamp;
-      lastUpdatedDate?: Timestamp;
-    }
-  >
-> => {
-  const uid = throwOrGetCurrentUserUID();
-  const snapshot = await getDocs(getUserFlashcardsCollectionRef(uid));
-  const flashcards: Record<
-    string,
-    {
-      front: string;
-      back: string;
-      tags: Array<string>;
-      createdDate?: Timestamp;
-      lastUpdatedDate?: Timestamp;
-    }
-  > = {};
-  snapshot.forEach((_doc) => {
-    // _doc.data() is never undefined for query doc snapshots
-    const { id } = _doc;
-    const { front, back, tags, createdDate, lastUpdatedDate } = _doc.data();
-    flashcards[id] = {
-      front,
-      back,
-      tags,
-    };
-    if (createdDate) {
-      flashcards[id].createdDate = createdDate;
-    }
-    if (lastUpdatedDate) {
-      flashcards[id].lastUpdatedDate = lastUpdatedDate;
-    }
+  const flashcards: Record<string, FirestoreFlashcard> = {};
+  [fromCache, fromServer].forEach((snapshot) => {
+    snapshot?.forEach((_doc) => {
+      // _doc.data() is never undefined for query doc snapshots
+      flashcards[_doc.id] = {
+        front: _doc.data().front,
+        back: _doc.data().back,
+        tags: _doc.data().tags,
+        createdDate: _doc.data().createdDate,
+        lastModified: _doc.data().lastModified,
+      };
+    });
   });
   return flashcards;
-};
-
-export const createFlashcard = async ({
-  front,
-  back,
-  tags,
-}: {
-  front: string;
-  back: string;
-  tags: Array<string>;
-}): Promise<
-  [
-    string,
-    {
-      front: string;
-      back: string;
-      tags: Array<string>;
-      createdDate: Timestamp;
-      lastUpdatedDate: Timestamp;
-    }
-  ]
-> => {
-  const uid = throwOrGetCurrentUserUID();
-  const now = Timestamp.now();
-  const flashcardDoc = {
-    front,
-    back,
-    tags,
-    createdDate: now,
-    lastUpdatedDate: now,
-  };
-  const docRef = await addDoc(
-    getUserFlashcardsCollectionRef(uid),
-    flashcardDoc
-  );
-  return [docRef.id, flashcardDoc];
-};
-
-export const updateFlashcard = async (
-  id: string,
-  {
-    front,
-    back,
-    tags,
-  }: {
-    front: string;
-    back: string;
-    tags: Array<string>;
-  }
-): Promise<
-  [
-    string,
-    {
-      front: string;
-      back: string;
-      tags: Array<string>;
-      lastUpdatedDate: Timestamp;
-    }
-  ]
-> => {
-  const uid = throwOrGetCurrentUserUID();
-  const now = Timestamp.now();
-  const flashcardDocUpdates = {
-    front,
-    back,
-    tags,
-    lastUpdatedDate: now,
-  };
-  await updateDoc(getUserFlashcardsDocumentRef(uid, id), flashcardDocUpdates);
-  return [id, flashcardDocUpdates];
 };

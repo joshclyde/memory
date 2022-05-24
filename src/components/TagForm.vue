@@ -22,9 +22,9 @@ const state = reactive<{
 
 const regular = async () => {
   if (!props.id) {
-    await tagsStore.createTag({ name: state.text });
+    await tagsStore.create({ name: state.text });
   } else {
-    await tagsStore.update({ id: props.id, name: state.text });
+    await tagsStore.update(props.id, { name: state.text });
   }
   const timeoutId = String(
     setTimeout(() => {

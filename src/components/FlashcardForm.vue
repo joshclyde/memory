@@ -34,8 +34,7 @@ const regular = async () => {
       tags: state.tags,
     });
   } else {
-    await flashcardsStore.update({
-      id: props.id,
+    await flashcardsStore.update(props.id, {
       front: state.front,
       back: state.back,
       tags: state.tags,
