@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`url utils CREATE_FLASHCARD_URL 1`] = `"/flashcard/create"`;
+
+exports[`url utils CREATE_TAG_URL 1`] = `"/tag/create"`;
+
+exports[`url utils EDIT_FLASHCARD_URL 1`] = `"/flashcard/edit"`;
+
+exports[`url utils HOME_URL 1`] = `"/"`;
+
+exports[`url utils editFlashcardByIdUrl 1`] = `"/flashcard/edit/foo"`;
+
+exports[`url utils editTagByIdUrl 1`] = `"/tag/edit/foo"`;
+
+exports[`url utils learnTagUrl 1`] = `"/learn/foo"`;
+
+exports[`url utils reviewTagUrl 1`] = `"/review/foo"`;
