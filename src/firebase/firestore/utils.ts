@@ -102,20 +102,13 @@ export const fetchCollection = async (collectionRef: CollectionReference) => {
         mostRecentLastModified = lastModified;
       }
     });
-
-    if (mostRecentLastModified) {
-      snapshots.fromServer = await getDocsFromServer(
-        query(collectionRef, where("lastModified", ">", mostRecentLastModified))
-      );
-      // eslint-disable-next-line no-console
-      console.log(
-        `Fetched ${snapshots.fromServer.size} documents for ${collectionRef.path} that were not updated in the cache.`
-      );
-    } else {
-      throw new Error(
-        "mostRecentLastModified was not found. This should never happen because all documents should have lastModified."
-      );
-    }
+    snapshots.fromServer = await getDocsFromServer(
+      query(collectionRef, where("lastModified", ">", mostRecentLastModified))
+    );
+    // eslint-disable-next-line no-console
+    console.log(
+      `Fetched ${snapshots.fromServer.size} documents for ${collectionRef.path} that were not updated in the cache.`
+    );
   }
 
   return snapshots;
