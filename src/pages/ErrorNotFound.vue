@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HOME_URL } from "src/utilities/url";
+import { HOME_URL } from "src/utils/url";
 </script>
 
 <template>

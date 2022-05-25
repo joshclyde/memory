@@ -2,7 +2,7 @@
 import { computed } from "@vue/reactivity";
 import { useFlashcardsStore } from "src/stores/flashcards";
 import { useTagsStore } from "src/stores/tags";
-import { editFlashcardByIdUrl } from "src/utilities/url";
+import { editFlashcardByIdUrl } from "src/utils/url";
 
 const props = defineProps<{ id: string }>();
 const flashcardsStore = useFlashcardsStore();

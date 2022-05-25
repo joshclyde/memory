@@ -3,7 +3,7 @@ import { createTag, updateTag, fetchTags } from "src/firebase";
 import {
   convertComputedFields,
   convertLastModified,
-} from "src/utilities/firestore";
+} from "src/utils/firestore";
 import { FirestoreTagUserInput } from "src/firebase/firestore/types";
 import { StateTag } from "./types";
 

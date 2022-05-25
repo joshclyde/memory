@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
-import * as UrlUtils from "src/utilities/url";
+import * as UrlUtils from "src/utils/url";
 
 const routes: RouteRecordRaw[] = [
   {

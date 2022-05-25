@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useTagsStore } from "src/stores/tags";
 import { useFlashcardsStore } from "src/stores/flashcards";
-import { reviewTagUrl, learnTagUrl, editTagByIdUrl } from "src/utilities/url";
+import { reviewTagUrl, learnTagUrl, editTagByIdUrl } from "src/utils/url";
 
 const props = defineProps<{ tagId: string }>();
 const tagsStore = useTagsStore();

@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useFlashcardsStore } from "src/stores/flashcards";
-import { HOME_URL } from "src/utilities/url";
+import { HOME_URL } from "src/utils/url";
 
 const route = useRoute();
 const flashcardsStore = useFlashcardsStore();

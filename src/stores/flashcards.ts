@@ -7,7 +7,7 @@ import {
 import {
   convertComputedFields,
   convertLastModified,
-} from "src/utilities/firestore";
+} from "src/utils/firestore";
 import { FirestoreFlashcardUserInput } from "src/firebase/firestore/types";
 import { StateFlashcard } from "./types";
 

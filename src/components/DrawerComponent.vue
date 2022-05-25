@@ -8,7 +8,7 @@ import {
   CREATE_TAG_URL,
   CREATE_FLASHCARD_URL,
   EDIT_FLASHCARD_URL,
-} from "src/utilities/url";
+} from "src/utils/url";
 
 const authStore = useAuthStore();
 const layoutStore = useLayoutStore();
