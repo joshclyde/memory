@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, computed } from "vue";
 import { useTagsStore } from "stores/tags";
 import { useFlashcardsStore } from "stores/flashcards";
 
 const props = defineProps<{ id?: string }>();
 
 const tagsStore = useTagsStore();
-const tagFormOptions = tagsStore.formOptions;
 const flashcardsStore = useFlashcardsStore();
 const flashcard = props.id && flashcardsStore.flashcards[props.id];
+
+const tagOptions = computed(() => {
+  return [...tagsStore.formOptions].sort((a, b) =>
+    a.label > b.label ? 1 : -1
+  );
+});
 
 const state = reactive<{
   front: string;
@@ -91,7 +96,10 @@ const onSubmit = async () => {
     <q-option-group
       v-model="state.tags"
       type="checkbox"
-      :options="tagFormOptions"
+      inline
+      dense
+      :options="tagOptions"
+      class="option-group"
     >
     </q-option-group>
     <q-input
@@ -128,3 +136,9 @@ const onSubmit = async () => {
     />
   </q-form>
 </template>
+
+<style scoped>
+.option-group {
+  margin-bottom: 16px;
+}
+</style>
