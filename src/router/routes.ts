@@ -7,6 +7,10 @@ const routes: RouteRecordRaw[] = [
     component: () => import("layouts/MainLayout.vue"),
     children: [
       {
+        path: UrlUtils.MEMORIES_URL,
+        component: () => import("pages/ViewMemoriesPage.vue"),
+      },
+      {
         path: UrlUtils.CREATE_TAG_URL,
         component: () => import("pages/CreateTagPage.vue"),
       },

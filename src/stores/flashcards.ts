@@ -11,7 +11,7 @@ import {
 import { FirestoreFlashcardUserInput } from "src/firebase/firestore/types";
 import { StateFlashcard } from "./types";
 
-interface FlashcardsState {
+export interface FlashcardsState {
   flashcards: Record<string, StateFlashcard>;
 }
 

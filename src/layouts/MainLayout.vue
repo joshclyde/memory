@@ -33,7 +33,8 @@
 
 <style scoped>
 .container {
-  max-width: 512px;
+  /* TODO: do I want a max width here? */
+  /* max-width: 512px; */
   margin: auto;
   padding: 16px 8px;
 }

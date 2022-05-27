@@ -8,6 +8,7 @@ import {
   CREATE_TAG_URL,
   CREATE_FLASHCARD_URL,
   EDIT_FLASHCARD_URL,
+  MEMORIES_URL,
 } from "src/utils/url";
 
 const authStore = useAuthStore();
@@ -15,26 +16,27 @@ const layoutStore = useLayoutStore();
 
 const list = [
   {
+    title: "Memories",
+    icon: "r_description",
+    link: MEMORIES_URL,
+  },
+  {
     title: "Home",
-    caption: "Study your flashcards",
     icon: "r_home",
     link: HOME_URL,
   },
   {
     title: "Create Tag",
-    caption: "Create a new tag",
     icon: "r_add",
     link: CREATE_TAG_URL,
   },
   {
     title: "Create Flashcard",
-    caption: "Create a new flashcard",
     icon: "r_add",
     link: CREATE_FLASHCARD_URL,
   },
   {
     title: "Edit Flashcard",
-    caption: "Edit any flashcards",
     icon: "r_edit",
     link: EDIT_FLASHCARD_URL,
   },
