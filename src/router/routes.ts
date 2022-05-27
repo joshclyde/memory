@@ -19,22 +19,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/EditTagByIdPage.vue"),
       },
       {
-        path: UrlUtils.CREATE_FLASHCARD_URL,
-        component: () => import("pages/CreateFlashcardPage.vue"),
-      },
-      {
-        path: UrlUtils.editFlashcardByIdUrl(":flashcardId"),
-        component: () => import("pages/EditFlashcardByIdPage.vue"),
-      },
-      {
-        path: UrlUtils.EDIT_FLASHCARD_URL,
-        component: () => import("pages/EditFlashcardPage.vue"),
-      },
-      {
-        path: UrlUtils.reviewTagUrl(":tagId"),
-        component: () => import("pages/ReviewTagPage.vue"),
-      },
-      {
         path: UrlUtils.learnTagUrl(":tagId"),
         component: () => import("pages/LearnTagPage.vue"),
       },
