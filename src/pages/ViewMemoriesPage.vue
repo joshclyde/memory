@@ -51,12 +51,20 @@ const results = computed(() => {
 
 const selectedFlashcardId = ref<string | undefined>();
 
+const shouldDisplayForm = ref(false);
+
 function onClickListItem(flashcardId: string) {
   selectedFlashcardId.value = flashcardId;
+  shouldDisplayForm.value = true;
 }
 
 function onClickCreateFlashcard() {
   selectedFlashcardId.value = undefined;
+  shouldDisplayForm.value = true;
+}
+
+function onClickBackButton() {
+  shouldDisplayForm.value = false;
 }
 </script>
 
@@ -72,12 +80,10 @@ function onClickCreateFlashcard() {
           dense
         />
         <q-btn
-          outline
-          flat
           round
           color="primary"
           icon="r_note_add"
-          :onClick="onClickCreateFlashcard"
+          @click="onClickCreateFlashcard"
         />
       </div>
       <q-chip
@@ -101,7 +107,18 @@ function onClickCreateFlashcard() {
         ></ViewMemoriesListItem>
       </q-list>
     </div>
-    <NewFlashcardForm :id="selectedFlashcardId" class="new-flashcard-form" />
+    <div class="new-flashcard-form">
+      <q-btn
+        padding="none"
+        flat
+        round
+        color="primary"
+        icon="r_arrow_back"
+        class="back-button"
+        @click="onClickBackButton"
+      ></q-btn>
+      <NewFlashcardForm :id="selectedFlashcardId" />
+    </div>
   </div>
 </template>
 
@@ -112,14 +129,31 @@ function onClickCreateFlashcard() {
 }
 
 .search-container {
-  max-width: 512px;
-  margin-left: 32px;
-  margin-right: 32px;
+  display: v-bind('shouldDisplayForm ? "none": undefined');
 }
 
 .new-flashcard-form {
-  min-width: 512px;
-  margin-right: 32px;
+  display: v-bind('!shouldDisplayForm ? "none": undefined');
+}
+
+.back-button {
+  display: v-bind('!shouldDisplayForm ? "none": "inline-flex"');
+  margin-bottom: 8px;
+}
+
+@media screen and (min-width: 768px) {
+  .search-container {
+    display: initial;
+    margin-right: 32px;
+  }
+  .new-flashcard-form {
+    min-width: 512px;
+    display: initial;
+  }
+
+  .back-button {
+    display: none;
+  }
 }
 
 .selected-chip {
@@ -133,6 +167,8 @@ function onClickCreateFlashcard() {
 .top-line {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  margin-bottom: 8px;
 }
 
 .search-input {

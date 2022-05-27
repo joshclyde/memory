@@ -17,7 +17,7 @@
     <drawer-component></drawer-component>
 
     <q-page-container>
-      <div class="container">
+      <div class="container-layout">
         <p v-if="pending">Checking login status...</p>
         <p v-if="error">
           Something bad happened when trying to check login status.
@@ -32,9 +32,9 @@
 </template>
 
 <style scoped>
-.container {
+.container-layout {
   /* TODO: do I want a max width here? */
-  /* max-width: 512px; */
+  max-width: 1024px;
   margin: auto;
   padding: 16px 8px;
 }

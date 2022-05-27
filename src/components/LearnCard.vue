@@ -71,7 +71,7 @@ function postHide() {
               round
               flat
               dense
-              :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+              :icon="expanded ? 'r_keyboard_arrow_up' : 'r_keyboard_arrow_down'"
               @click="expanded = !expanded"
             />
           </q-card-actions>
@@ -86,21 +86,21 @@ function postHide() {
             <q-space></q-space>
           </q-card-section>
           <q-card-actions>
-            <q-btn flat round color="dark" icon="edit"></q-btn>
-            <q-btn flat round color="dark" icon="delete"></q-btn>
+            <q-btn flat round color="dark" icon="r_edit"></q-btn>
+            <q-btn flat round color="dark" icon="r_delete"></q-btn>
             <q-space></q-space>
             <q-btn
               flat
               round
               color="negative"
-              icon="thumb_down"
+              icon="r_thumb_down"
               @click="thumbsDown"
             ></q-btn>
             <q-btn
               flat
               round
               color="positive"
-              icon="thumb_up"
+              icon="r_thumb_up"
               @click="thumbsUp"
             ></q-btn>
           </q-card-actions>
