@@ -4,6 +4,7 @@ import { useTagsStore } from "src/stores/tags";
 import { useFlashcardsStore } from "src/stores/flashcards";
 import ViewMemoriesListItem from "src/components/ViewMemoriesListItem.vue";
 import NewFlashcardForm from "src/components/NewFlashcardForm.vue";
+import LeftRightPage from "src/components/LeftRightPage.vue";
 
 const tagStore = useTagsStore();
 const flashcardsStore = useFlashcardsStore();
@@ -51,26 +52,29 @@ const results = computed(() => {
 
 const selectedFlashcardId = ref<string | undefined>();
 
-const shouldDisplayForm = ref(false);
+const displayStatus = ref<"LEFT" | "RIGHT">("LEFT");
+
+function setDisplayStatus(value: "LEFT" | "RIGHT") {
+  displayStatus.value = value;
+}
 
 function onClickListItem(flashcardId: string) {
   selectedFlashcardId.value = flashcardId;
-  shouldDisplayForm.value = true;
+  setDisplayStatus("RIGHT");
 }
 
 function onClickCreateFlashcard() {
   selectedFlashcardId.value = undefined;
-  shouldDisplayForm.value = true;
-}
-
-function onClickBackButton() {
-  shouldDisplayForm.value = false;
+  setDisplayStatus("RIGHT");
 }
 </script>
 
 <template>
-  <div class="container-view-memories-page">
-    <div class="search-container">
+  <LeftRightPage
+    :displayStatus="displayStatus"
+    :setDisplayStatus="setDisplayStatus"
+  >
+    <template #left>
       <div class="top-line">
         <q-input
           class="search-input"
@@ -106,56 +110,17 @@ function onClickBackButton() {
           :onClick="onClickListItem"
         ></ViewMemoriesListItem>
       </q-list>
-    </div>
-    <div class="new-flashcard-form">
-      <q-btn
-        padding="none"
-        flat
-        round
-        color="primary"
-        icon="r_arrow_back"
-        class="back-button"
-        @click="onClickBackButton"
-      ></q-btn>
-      <NewFlashcardForm :id="selectedFlashcardId" />
-    </div>
-  </div>
+    </template>
+    <template #right>
+      <NewFlashcardForm
+        :id="selectedFlashcardId"
+        class="new-flashcard-form-class"
+      />
+    </template>
+  </LeftRightPage>
 </template>
 
 <style scoped>
-.container-view-memories-page {
-  display: flex;
-  flex-direction: row;
-}
-
-.search-container {
-  display: v-bind('shouldDisplayForm ? "none": undefined');
-}
-
-.new-flashcard-form {
-  display: v-bind('!shouldDisplayForm ? "none": undefined');
-}
-
-.back-button {
-  display: v-bind('!shouldDisplayForm ? "none": "inline-flex"');
-  margin-bottom: 8px;
-}
-
-@media screen and (min-width: 768px) {
-  .search-container {
-    display: initial;
-    margin-right: 32px;
-  }
-  .new-flashcard-form {
-    min-width: 512px;
-    display: initial;
-  }
-
-  .back-button {
-    display: none;
-  }
-}
-
 .selected-chip {
   background-color: var(--q-secondary);
 }
@@ -169,6 +134,12 @@ function onClickBackButton() {
   flex-direction: row;
   align-items: center;
   margin-bottom: 8px;
+}
+
+@media screen and (min-width: 768px) {
+  .new-flashcard-form-class {
+    min-width: 512px;
+  }
 }
 
 .search-input {
