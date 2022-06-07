@@ -2,7 +2,7 @@
 import { ref, reactive, computed } from "vue";
 import { useTagsStore } from "src/stores/tags";
 import { useFlashcardsStore } from "src/stores/flashcards";
-import ViewMemoriesListItem from "src/components/ViewMemoriesListItem.vue";
+import MemoriesListItem from "src/components/MemoriesListItem.vue";
 import NewFlashcardForm from "src/components/NewFlashcardForm.vue";
 import LeftRightPage from "src/components/LeftRightPage.vue";
 
@@ -103,12 +103,12 @@ function onClickCreateFlashcard() {
       </q-chip>
       <!-- TODO: don't have this be as long. slowing down page for sure -->
       <q-list class="item-list" bordered separator>
-        <ViewMemoriesListItem
+        <MemoriesListItem
           v-for="flashcardId in results"
           :id="flashcardId"
           :key="flashcardId"
           :onClick="onClickListItem"
-        ></ViewMemoriesListItem>
+        ></MemoriesListItem>
       </q-list>
     </template>
     <template #right>
