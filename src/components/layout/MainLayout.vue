@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import DrawerComponent from "src/components/DrawerComponent.vue";
+import DrawerComponent from "src/components/layout/DrawerComponent.vue";
 import { useAuthStore, useStartAuthListener } from "stores/auth";
 import { useLayoutStore } from "src/stores/layout";
 

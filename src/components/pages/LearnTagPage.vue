@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LearnCard from "src/components/LearnCard.vue";
+import LearnCard from "src/components/learning/LearnCard.vue";
 
 import { computed } from "vue";
 import { useRoute } from "vue-router";

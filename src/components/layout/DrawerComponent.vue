@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import EssentialLink from "components/EssentialLink.vue";
 import { signInUserThroughGoogle, signOutUser } from "src/firebase";
 import { useLayoutStore } from "src/stores/layout";
 import { useAuthStore } from "src/stores/auth";
 import { HOME_URL, MEMORIES_URL, TAGS_URL } from "src/utils/url";
+import DrawerLink from "./DrawerLink.vue";
 
 const authStore = useAuthStore();
 const layoutStore = useLayoutStore();
@@ -39,16 +39,16 @@ const clickLogout = () => signOutUser();
   >
     <q-list>
       <q-item-label header>Memory</q-item-label>
-      <EssentialLink v-for="item in list" :key="item.title" v-bind="item" />
+      <DrawerLink v-for="item in list" :key="item.title" v-bind="item" />
       <q-separator></q-separator>
-      <EssentialLink
+      <DrawerLink
         title="Login"
         icon="login"
         :on-click="clickLogin"
         v-if="authStore.isSuccess && !authStore.isAuthenticated"
       />
       <q-item-label header>Settings</q-item-label>
-      <EssentialLink
+      <DrawerLink
         title="Logout"
         icon="logout"
         :on-click="clickLogout"

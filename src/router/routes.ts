@@ -4,23 +4,23 @@ import * as UrlUtils from "src/utils/url";
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
-    component: () => import("layouts/MainLayout.vue"),
+    component: () => import("src/components/layout/MainLayout.vue"),
     children: [
       {
         path: UrlUtils.MEMORIES_URL,
-        component: () => import("pages/MemoriesPage.vue"),
+        component: () => import("src/components/pages/MemoriesPage.vue"),
       },
       {
         path: UrlUtils.TAGS_URL,
-        component: () => import("pages/TagsPage.vue"),
+        component: () => import("src/components/pages/TagsPage.vue"),
       },
       {
         path: UrlUtils.learnTagUrl(":tagId"),
-        component: () => import("pages/LearnTagPage.vue"),
+        component: () => import("src/components/pages/LearnTagPage.vue"),
       },
       {
         path: UrlUtils.HOME_URL,
-        component: () => import("pages/HomePage.vue"),
+        component: () => import("src/components/pages/HomePage.vue"),
       },
     ],
   },
@@ -29,7 +29,7 @@ const routes: RouteRecordRaw[] = [
   // but you can also remove it
   {
     path: "/:catchAll(.*)*",
-    component: () => import("pages/ErrorNotFound.vue"),
+    component: () => import("src/components/pages/ErrorNotFound.vue"),
   },
 ];
 

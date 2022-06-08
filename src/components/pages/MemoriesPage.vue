@@ -2,9 +2,9 @@
 import { ref, reactive, computed } from "vue";
 import { useTagsStore } from "src/stores/tags";
 import { useFlashcardsStore } from "src/stores/flashcards";
-import MemoriesListItem from "src/components/MemoriesListItem.vue";
-import NewFlashcardForm from "src/components/NewFlashcardForm.vue";
-import LeftRightPage from "src/components/LeftRightPage.vue";
+import MemoriesListItem from "src/components/memories/MemoriesListItem.vue";
+import FlashcardForm from "src/components/memories/FlashcardForm.vue";
+import LeftRightPage from "src/components/layout/LeftRightPage.vue";
 
 const tagStore = useTagsStore();
 const flashcardsStore = useFlashcardsStore();
@@ -112,7 +112,7 @@ function onClickCreateFlashcard() {
       </q-list>
     </template>
     <template #right>
-      <NewFlashcardForm
+      <FlashcardForm
         :id="selectedFlashcardId"
         class="new-flashcard-form-class"
       />

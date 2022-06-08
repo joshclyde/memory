@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useTagsStore } from "src/stores/tags";
-import LeftRightPage from "src/components/LeftRightPage.vue";
+import LeftRightPage from "src/components/layout/LeftRightPage.vue";
 import TagPersistentForm from "src/components/tags/TagPersistentForm.vue";
 import TagsList from "src/components/tags/TagsList.vue";
-import SearchInput from "src/components/SearchInput.vue";
+import SearchInput from "src/components/inputs/SearchInput.vue";
 
 const searchTerm = ref("");
 
