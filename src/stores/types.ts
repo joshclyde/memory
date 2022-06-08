@@ -1,6 +1,7 @@
 export interface StateComputedFields {
   createdDate: string;
   lastModified: string;
+  isDeleted?: boolean;
 }
 
 export interface StateTagUserInput {

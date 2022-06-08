@@ -3,6 +3,7 @@ import { Timestamp } from "firebase/firestore";
 export interface FirestoreComputedFields {
   createdDate: Timestamp;
   lastModified: Timestamp;
+  isDeleted?: boolean;
 }
 
 export interface FirestoreTagUserInput {

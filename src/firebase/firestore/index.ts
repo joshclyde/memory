@@ -6,7 +6,13 @@ import {
   FirestoreFlashcard,
   FirestoreFlashcardUserInput,
 } from "./types";
-import { createDocument, updateDocument, db, fetchCollection } from "./utils";
+import {
+  createDocument,
+  updateDocument,
+  db,
+  fetchCollection,
+  deleteDocument,
+} from "./utils";
 
 /*
   TODO:
@@ -47,6 +53,11 @@ export const updateFlashcard = (
   data: FirestoreFlashcardUserInput
 ): Promise<Omit<FirestoreFlashcard, "createdDate">> =>
   updateDocument(getFlashcardsDocumentRef(id), data);
+
+export const deleteTag = (
+  id: string
+): Promise<Pick<FirestoreTag, "isDeleted" | "lastModified">> =>
+  deleteDocument(getTagsDocumentRef(id));
 
 export const fetchTags = async () => {
   const { fromCache, fromServer } = await fetchCollection(

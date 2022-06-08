@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { createTag, updateTag, fetchTags } from "src/firebase";
+import { createTag, updateTag, fetchTags, deleteTag } from "src/firebase";
 import {
   convertComputedFields,
   convertLastModified,
@@ -38,9 +38,12 @@ export const useTagsStore = defineStore({
         ...convertLastModified(firestoreTag),
       };
     },
-    delete(id: string) {
-      // TODO: this probs should delete from firestore as well
-      delete this.tags[id];
+    async delete(id: string) {
+      const firestoreTag = await deleteTag(id);
+      this.tags[id] = {
+        ...this.tags[id],
+        ...convertLastModified(firestoreTag),
+      };
     },
   },
   getters: {

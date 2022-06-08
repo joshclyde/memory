@@ -51,6 +51,17 @@ export const updateDocument = async <T extends object>(
   return fullData;
 };
 
+export const deleteDocument = async (documentRef: DocumentReference) => {
+  await enableCache;
+
+  const fullData = {
+    isDeleted: true,
+    lastModified: Timestamp.now(),
+  };
+  await updateDoc(documentRef, fullData);
+  return fullData;
+};
+
 /*
   1.  Fetch all documents from cache
   2a. If there were no documents in cache, fetch all documents from the server
