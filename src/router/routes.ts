@@ -15,14 +15,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/TagsPage.vue"),
       },
       {
-        path: UrlUtils.CREATE_TAG_URL,
-        component: () => import("pages/CreateTagPage.vue"),
-      },
-      {
-        path: UrlUtils.editTagByIdUrl(":tagId"),
-        component: () => import("pages/EditTagByIdPage.vue"),
-      },
-      {
         path: UrlUtils.learnTagUrl(":tagId"),
         component: () => import("pages/LearnTagPage.vue"),
       },

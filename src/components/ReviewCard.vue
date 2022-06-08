@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useTagsStore } from "src/stores/tags";
 import { useFlashcardsStore } from "src/stores/flashcards";
-import { learnTagUrl, editTagByIdUrl } from "src/utils/url";
+import { learnTagUrl } from "src/utils/url";
 
 const props = defineProps<{ tagId: string }>();
 const tagsStore = useTagsStore();
@@ -32,7 +32,6 @@ const textCount = computed(() => {
     <q-separator />
     <q-card-actions>
       <q-btn flat :to="learnTagUrl(props.tagId)">Learn</q-btn>
-      <q-btn flat :to="editTagByIdUrl(props.tagId)">Edit</q-btn>
     </q-card-actions>
   </q-card>
 </template>
