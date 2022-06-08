@@ -48,10 +48,12 @@ const isRight = computed(() => props.displayStatus === "RIGHT");
 
 .container-left-side {
   display: v-bind('isLeft ? undefined: "none"');
+  width: 100%;
 }
 
 .container-right-side {
   display: v-bind('isRight ? undefined : "none"');
+  width: 100%;
 }
 
 .back-button {

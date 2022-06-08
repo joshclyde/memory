@@ -3,7 +3,12 @@ import EssentialLink from "components/EssentialLink.vue";
 import { signInUserThroughGoogle, signOutUser } from "src/firebase";
 import { useLayoutStore } from "src/stores/layout";
 import { useAuthStore } from "src/stores/auth";
-import { HOME_URL, CREATE_TAG_URL, MEMORIES_URL } from "src/utils/url";
+import {
+  HOME_URL,
+  CREATE_TAG_URL,
+  MEMORIES_URL,
+  TAGS_URL,
+} from "src/utils/url";
 
 const authStore = useAuthStore();
 const layoutStore = useLayoutStore();
@@ -18,6 +23,11 @@ const list = [
     title: "Memories",
     icon: "r_description",
     link: MEMORIES_URL,
+  },
+  {
+    title: "Tags",
+    icon: "r_sell",
+    link: TAGS_URL,
   },
   {
     title: "Create Tag",

@@ -11,6 +11,10 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/MemoriesPage.vue"),
       },
       {
+        path: UrlUtils.TAGS_URL,
+        component: () => import("pages/TagsPage.vue"),
+      },
+      {
         path: UrlUtils.CREATE_TAG_URL,
         component: () => import("pages/CreateTagPage.vue"),
       },
