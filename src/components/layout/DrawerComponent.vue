@@ -10,8 +10,8 @@ const layoutStore = useLayoutStore();
 
 const list = [
   {
-    title: "Home",
-    icon: "r_home",
+    title: "Learn",
+    icon: "r_school",
     link: HOME_URL,
   },
   {
