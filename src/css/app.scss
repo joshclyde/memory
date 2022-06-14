@@ -8,3 +8,12 @@
 h1, h2, h3, h4, h5, h6 {
   margin: 0 0 16px;
 }
+
+
+.q-item.q-router-link--active {
+  color: black;  
+}
+
+.q-item.q-router-link--exact-active {
+  color: var(--q-primary);  
+}
