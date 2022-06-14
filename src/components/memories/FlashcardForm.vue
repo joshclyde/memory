@@ -165,12 +165,18 @@ const currentFormState = computed(() => {
     <span v-for="(value, key) in currentFormState.success" :key="key">
       <p>{{ value }}</p>
     </span>
-    <q-btn
-      label="Submit"
-      type="submit"
-      color="primary"
-      :loading="isPending(currentFormState)"
-    />
+    <div class="row q-gutter-sm">
+      <q-space></q-space>
+      <q-btn
+        color="primary"
+        :loading="isPending(currentFormState)"
+        :label="typeof currentFlashcardId === 'string' ? 'Save' : 'Add'"
+        :icon-right="
+          typeof currentFlashcardId === 'string' ? 'r_save' : 'r_add'
+        "
+        type="submit"
+      />
+    </div>
   </q-form>
 </template>
 
