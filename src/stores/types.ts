@@ -19,3 +19,12 @@ export interface StateFlashcardUserInput {
 export interface StateFlashcard
   extends StateFlashcardUserInput,
     StateComputedFields {}
+
+export interface StateReviewUserInput {
+  result: "GOOD" | "BAD";
+  memoryId: string;
+}
+
+export interface StateReview
+  extends StateReviewUserInput,
+    StateComputedFields {}

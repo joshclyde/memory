@@ -17,6 +17,7 @@ Potential ways to improve
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useFlashcardsStore } from "src/stores/flashcards";
+import { useReviewsStore } from "src/stores/reviews";
 
 const expanded = ref(false);
 const props = defineProps<{ tagId: string }>();
@@ -24,14 +25,29 @@ const props = defineProps<{ tagId: string }>();
 const flashcardsStore = useFlashcardsStore();
 const flashcardIds = flashcardsStore.getIdsByTagId(props.tagId);
 
+const reviewsStore = useReviewsStore();
+
 const currentIndex = ref(0);
 
-function thumbsDown() {
+function thumbsDown(memoryId: string) {
+  reviewsStore.create({
+    memoryId,
+    result: "BAD",
+  });
   expanded.value = false;
   currentIndex.value += 1;
 }
 
-function thumbsUp() {
+function thumbsNeutral() {
+  expanded.value = false;
+  currentIndex.value += 1;
+}
+
+function thumbsUp(memoryId: string) {
+  reviewsStore.create({
+    memoryId,
+    result: "GOOD",
+  });
   expanded.value = false;
   currentIndex.value += 1;
 }
@@ -92,16 +108,23 @@ function postHide() {
             <q-btn
               flat
               round
+              color="dark"
+              icon="r_skip_next"
+              @click="thumbsNeutral"
+            ></q-btn>
+            <q-btn
+              flat
+              round
               color="negative"
               icon="r_thumb_down"
-              @click="thumbsDown"
+              @click="() => thumbsDown(flashcardId)"
             ></q-btn>
             <q-btn
               flat
               round
               color="positive"
               icon="r_thumb_up"
-              @click="thumbsUp"
+              @click="() => thumbsUp(flashcardId)"
             ></q-btn>
           </q-card-actions>
         </div>

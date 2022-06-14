@@ -23,3 +23,12 @@ export interface FirestoreFlashcardUserInput {
 export interface FirestoreFlashcard
   extends FirestoreFlashcardUserInput,
     FirestoreComputedFields {}
+
+export interface FirestoreReviewUserInput {
+  result: "GOOD" | "BAD";
+  memoryId: string;
+}
+
+export interface FirestoreReview
+  extends FirestoreReviewUserInput,
+    FirestoreComputedFields {}

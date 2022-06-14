@@ -3,6 +3,7 @@ import { startFirebaseEventListening } from "src/firebase";
 
 import { useTagsStore } from "./tags";
 import { useFlashcardsStore } from "./flashcards";
+import { useReviewsStore } from "./reviews";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -52,17 +53,23 @@ export const useStartAuthListener = () => {
   const authStore = useAuthStore();
   const tagsStore = useTagsStore();
   const flashcardsStore = useFlashcardsStore();
+  const reviewsStore = useReviewsStore();
   if (!isListening) {
     authStore.pending();
     startFirebaseEventListening(
       async ({ uid }) => {
-        await Promise.all([tagsStore.fetch(), flashcardsStore.fetch()]);
+        await Promise.all([
+          tagsStore.fetch(),
+          flashcardsStore.fetch(),
+          reviewsStore.fetch(),
+        ]);
         authStore.success(uid);
       },
       () => {
         authStore.success(null);
         tagsStore.clear();
         flashcardsStore.clear();
+        reviewsStore.clear();
       }
     );
   }
