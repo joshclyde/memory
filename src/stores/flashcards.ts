@@ -60,5 +60,14 @@ export const useFlashcardsStore = defineStore({
         );
       };
     },
+    tagSizes: (state) => {
+      const retValue: Record<string, number> = {};
+      Object.values(state.flashcards).forEach(({ tags }) => {
+        tags.forEach((tagId) => {
+          retValue[tagId] = retValue[tagId] ? retValue[tagId] + 1 : 1;
+        });
+      });
+      return retValue;
+    },
   },
 });
