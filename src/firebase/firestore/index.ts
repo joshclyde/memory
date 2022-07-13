@@ -70,6 +70,7 @@ export const fetchTags = async () => {
       // _doc.data() is never undefined for query doc snapshots
       tags[_doc.id] = {
         name: _doc.data().name,
+        isDeleted: _doc.data().isDeleted,
         createdDate: _doc.data().createdDate,
         lastModified: _doc.data().lastModified,
       };
