@@ -52,13 +52,19 @@ function thumbsUp(memoryId: string) {
   currentIndex.value += 1;
 }
 
-const finished = computed(() => !flashcardIds[currentIndex.value]);
+function deleteMemory(memoryId: string) {
+  flashcardsStore.delete(memoryId);
+  expanded.value = false;
+  currentIndex.value += 1;
+}
+
 const count = computed(() => flashcardIds.length);
 const textCurrentFlashcard = computed(
   () => `${currentIndex.value + 1} / ${count.value}`
 );
 
 const flashcardId = computed(() => flashcardIds[currentIndex.value]);
+const finished = computed(() => !flashcardId.value);
 
 const flashcard = computed(() => flashcardsStore.flashcards[flashcardId.value]);
 const front = ref(flashcard.value.front);
@@ -103,7 +109,13 @@ function postHide() {
           </q-card-section>
           <q-card-actions>
             <q-btn flat round color="dark" icon="r_edit"></q-btn>
-            <q-btn flat round color="dark" icon="r_delete"></q-btn>
+            <q-btn
+              flat
+              round
+              color="dark"
+              icon="r_delete"
+              @click="deleteMemory(flashcardId)"
+            ></q-btn>
             <q-space></q-space>
             <q-btn
               flat
@@ -117,14 +129,14 @@ function postHide() {
               round
               color="negative"
               icon="r_thumb_down"
-              @click="() => thumbsDown(flashcardId)"
+              @click="thumbsDown(flashcardId)"
             ></q-btn>
             <q-btn
               flat
               round
               color="positive"
               icon="r_thumb_up"
-              @click="() => thumbsUp(flashcardId)"
+              @click="thumbsUp(flashcardId)"
             ></q-btn>
           </q-card-actions>
         </div>

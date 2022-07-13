@@ -55,7 +55,6 @@ const submitState = useAsyncStatus(async () => {
     */
     values.front = "";
     values.back = "";
-    values.tags = [];
   }
 });
 const deleteState = useAsyncStatus(async () => {
