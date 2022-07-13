@@ -1,60 +1,73 @@
 <script setup lang="ts">
-import { reactive, computed, watch } from "vue";
+import { computed, reactive } from "vue";
 import { useTagsStore } from "stores/tags";
 import { useFlashcardsStore } from "stores/flashcards";
-import { StateFlashcardUserInput } from "stores/types";
+import {
+  useAsyncStatus,
+  isStatusPending,
+} from "src/composables/useAsyncStatus";
 
-const props = defineProps<{ id?: string }>();
+/*
+  For now, I don't really want to have this form dynamically be able
+  to change to different tags for now because I would have to handle
+  what to do what to do when in a pending state.
+*/
+const props = defineProps<{ initialFlashcardId?: string }>();
+// eslint-disable-next-line vue/no-setup-props-destructure
+const flashcardId = props.initialFlashcardId;
 
 const tagsStore = useTagsStore();
 const flashcardsStore = useFlashcardsStore();
 
-const createSymbol = Symbol("create");
-type StatesKey = symbol | string;
-
-interface StatesEntity {
-  form: StateFlashcardUserInput;
-  pending: null | "PENDING" | "COMPLETE";
-  success: Record<string, string>;
-  error: null | string;
-}
-
-// TODO: Set this as a Partial with StatesKey being typeof createSymbol
-const states = reactive<Record<StatesKey, StatesEntity>>({});
-
-function addState(flashcardId: StatesKey) {
-  if (states[flashcardId] == null) {
-    if (typeof flashcardId === "string") {
-      states[flashcardId] = {
-        form: {
-          front: flashcardsStore.flashcards[flashcardId].front,
-          back: flashcardsStore.flashcards[flashcardId].back,
-          tags: flashcardsStore.flashcards[flashcardId].tags,
-        },
-        pending: null,
-        success: {},
-        error: null,
-      };
-    } else {
-      states[flashcardId] = {
-        form: {
-          front: "",
-          back: "",
-          tags: [],
-        },
-        pending: null,
-        success: {},
-        error: null,
-      };
-    }
-  }
-}
-const currentFlashcardId = computed(() => {
-  return props.id == null ? createSymbol : props.id;
+const values = reactive({
+  front:
+    typeof flashcardId === "string"
+      ? flashcardsStore.flashcards[flashcardId].front
+      : "",
+  back:
+    typeof flashcardId === "string"
+      ? flashcardsStore.flashcards[flashcardId].back
+      : "",
+  tags:
+    typeof flashcardId === "string"
+      ? flashcardsStore.flashcards[flashcardId].tags
+      : [],
 });
-addState(currentFlashcardId.value); // setting state on initial render
-watch(currentFlashcardId, (flashcarId) => {
-  addState(flashcarId); // setting state when the current flashcard id changes
+
+const submitState = useAsyncStatus(async () => {
+  if (typeof flashcardId === "string") {
+    await flashcardsStore.update(flashcardId, values);
+  } else {
+    await flashcardsStore.create(values);
+
+    /*
+      When adding a new flashcard, I want to clear the
+      front and back of the flashcard after a successful
+      submission. However, I want to keep the selected tags
+      the same.
+
+      When a user is creating many flashcards at once, they
+      will not want the front and back to persist for the next
+      flashcard. But 9 times out of 10, the user will want the
+      tags to be the same because they are reading through some
+      documentation and creating many flashcards for the same
+      subject.
+    */
+    values.front = "";
+    values.back = "";
+    values.tags = [];
+  }
+});
+const deleteState = useAsyncStatus(async () => {
+  if (flashcardId) {
+    await flashcardsStore.delete(flashcardId);
+  }
+});
+
+const submitPending = computed(() => isStatusPending(submitState.status.value));
+const deletePending = computed(() => isStatusPending(deleteState.status.value));
+const pending = computed(() => {
+  return submitPending.value || deletePending.value;
 });
 
 const tagOptions = computed(() => {
@@ -62,76 +75,12 @@ const tagOptions = computed(() => {
     a.label > b.label ? 1 : -1
   );
 });
-
-function isExistingFlashcard(flashcardId: StatesKey): flashcardId is string {
-  return typeof flashcardId === "string";
-}
-
-const regular = async (flashcardId: StatesKey) => {
-  const exists = isExistingFlashcard(flashcardId);
-  if (exists) {
-    await flashcardsStore.update(flashcardId, states[flashcardId].form);
-  } else {
-    await flashcardsStore.create(states[flashcardId].form);
-  }
-  const timeoutId = String(
-    setTimeout(() => {
-      delete states[flashcardId].success[timeoutId];
-    }, 3000)
-  );
-
-  states[flashcardId].success[timeoutId] = exists
-    ? `Successfully edited.`
-    : `Successfully created.`;
-};
-
-function isPending(state: StatesEntity) {
-  return state.pending === "PENDING";
-}
-
-const onSubmit = async () => {
-  const flashcardId = currentFlashcardId.value;
-  if (!isPending(states[flashcardId])) {
-    states[flashcardId].pending = "PENDING";
-    states[flashcardId].error = null;
-    try {
-      await regular(flashcardId);
-      if (flashcardId === createSymbol) {
-        /*
-           When adding a new flashcard, I want to clear the
-           front and back of the flashcard after a successful
-           submission. However, I want to keep the selected tags
-           the same.
-
-           When a user is creating many flashcards at once, they
-           will not want the front and back to persist for the next
-           flashcard. But 9 times out of 10, the user will want the
-           tags to be the same because they are reading through some
-           documentation and creating many flashcards for the same
-           subject.
-         */
-        states[flashcardId].form.front = "";
-        states[flashcardId].form.back = "";
-      }
-    } catch (e) {
-      console.error(
-        `An error occured when submitting a create/edit flashcard: ${e}`
-      );
-      states[flashcardId].error = "Error!!"; // TODO: better error message
-    }
-    states[flashcardId].pending = "COMPLETE"; // TODO: what should I do when the submission is complete?
-  }
-};
-
-const currentFormState = computed(() => {
-  return states[currentFlashcardId.value];
-});
 </script>
 
 <template>
-  <q-form class="container-flashcard-form" @submit="onSubmit">
+  <q-form @submit="submitState.wrapper">
     <q-option-group
-      v-model="currentFormState.form.tags"
+      v-model="values.tags"
       type="checkbox"
       inline
       dense
@@ -141,50 +90,46 @@ const currentFormState = computed(() => {
     </q-option-group>
     <q-input
       filled
-      v-model="currentFormState.form.front"
+      v-model="values.front"
       type="textarea"
       label="Front"
-      :loading="isPending(currentFormState)"
-      :readonly="isPending(currentFormState)"
+      :loading="pending"
+      :readonly="pending"
       lazy-rules="ondemand"
       :rules="[(val) => !!val || 'Field is required']"
     >
     </q-input>
     <q-input
       filled
-      v-model="currentFormState.form.back"
+      v-model="values.back"
       type="textarea"
       label="Back"
-      :loading="isPending(currentFormState)"
-      :readonly="isPending(currentFormState)"
+      :loading="pending"
+      :readonly="pending"
       lazy-rules="ondemand"
       :rules="[(val) => !!val || 'Field is required']"
     >
     </q-input>
-    <p v-if="currentFormState.error">{{ currentFormState.error }}</p>
-    <span v-for="(value, key) in currentFormState.success" :key="key">
-      <p>{{ value }}</p>
-    </span>
+    <!--  -->
+    <p v-if="submitState.error.value">{{ submitState.error }}</p>
     <div class="row q-gutter-sm">
       <q-space></q-space>
       <q-btn
+        v-if="typeof flashcardId === 'string' && !submitPending"
+        color="negative"
+        :loading="deletePending"
+        label="Delete"
+        icon-right="r_delete"
+        @click="deleteState.wrapper"
+      />
+      <q-btn
+        v-if="!deletePending"
         color="primary"
-        :loading="isPending(currentFormState)"
-        :label="typeof currentFlashcardId === 'string' ? 'Save' : 'Add'"
-        :icon-right="
-          typeof currentFlashcardId === 'string' ? 'r_save' : 'r_add'
-        "
+        :loading="submitPending"
+        :label="typeof flashcardId === 'string' ? 'Save' : 'Add'"
+        :icon-right="typeof flashcardId === 'string' ? 'r_save' : 'r_add'"
         type="submit"
       />
     </div>
   </q-form>
 </template>
-
-<style scoped>
-.container-flashcard-form {
-  max-width: 768px;
-}
-.option-group {
-  margin-bottom: 16px;
-}
-</style>

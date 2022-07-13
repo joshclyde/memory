@@ -19,6 +19,8 @@ import {
 
   should I be accesing uid within these functions? or should I have the
   functions in Pinia pass in the Pinia stat's uid?
+
+  I could make this whole thing a class.
 */
 const getTagsCollectionRef = () =>
   collection(db, `/users/${throwOrGetCurrentUserUID()}/tags`);
@@ -59,6 +61,11 @@ export const deleteTag = (
 ): Promise<Pick<FirestoreTag, "isDeleted" | "lastModified">> =>
   deleteDocument(getTagsDocumentRef(id));
 
+export const deleteFlashcard = (
+  id: string
+): Promise<Pick<FirestoreFlashcard, "isDeleted" | "lastModified">> =>
+  deleteDocument(getFlashcardsDocumentRef(id));
+
 export const fetchTags = async () => {
   const { fromCache, fromServer } = await fetchCollection(
     getTagsCollectionRef()
@@ -92,6 +99,7 @@ export const fetchFlashcards = async () => {
         front: _doc.data().front,
         back: _doc.data().back,
         tags: _doc.data().tags,
+        isDeleted: _doc.data().isDeleted,
         createdDate: _doc.data().createdDate,
         lastModified: _doc.data().lastModified,
       };

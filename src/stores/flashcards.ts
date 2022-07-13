@@ -3,6 +3,7 @@ import {
   createFlashcard,
   updateFlashcard,
   fetchFlashcards,
+  deleteFlashcard,
 } from "src/firebase";
 import {
   convertComputedFields,
@@ -12,57 +13,75 @@ import { FirestoreFlashcardUserInput } from "src/firebase/firestore/types";
 import { StateFlashcard } from "./types";
 
 export interface FlashcardsState {
-  flashcards: Record<string, StateFlashcard>;
+  flashcardsIncludingDeleted: Record<string, StateFlashcard>;
 }
 
-const initialState: FlashcardsState = { flashcards: {} };
+const initialState: FlashcardsState = { flashcardsIncludingDeleted: {} };
 
 export const useFlashcardsStore = defineStore({
   id: "flashcards",
   state: () => initialState,
   actions: {
     clear() {
-      this.flashcards = {};
+      this.flashcardsIncludingDeleted = {};
     },
     async fetch() {
       const firestoreFlashcards = await fetchFlashcards();
       Object.entries(firestoreFlashcards).forEach(
         ([id, firestoreFlashcard]) => {
-          this.flashcards[id] = convertComputedFields(firestoreFlashcard);
+          this.flashcardsIncludingDeleted[id] =
+            convertComputedFields(firestoreFlashcard);
         }
       );
     },
     async create(data: FirestoreFlashcardUserInput) {
       const [id, firestoreFlashcard] = await createFlashcard(data);
-      this.flashcards[id] = convertComputedFields(firestoreFlashcard);
+      this.flashcardsIncludingDeleted[id] =
+        convertComputedFields(firestoreFlashcard);
       return id;
     },
     async update(id: string, data: FirestoreFlashcardUserInput) {
       const firestoreFlashcard = await updateFlashcard(id, data);
-      this.flashcards[id] = {
+      this.flashcardsIncludingDeleted[id] = {
         ...this.flashcards[id],
+        ...convertLastModified(firestoreFlashcard),
+      };
+    },
+    async delete(id: string) {
+      const firestoreFlashcard = await deleteFlashcard(id);
+      this.flashcardsIncludingDeleted[id] = {
+        ...this.flashcardsIncludingDeleted[id],
         ...convertLastModified(firestoreFlashcard),
       };
     },
   },
   getters: {
-    getIdsByTagId: (state) => {
+    flashcards(state): Record<string, StateFlashcard> {
+      return Object.entries(state.flashcardsIncludingDeleted)
+        .filter(([key, value]) => !value.isDeleted)
+        .reduce((obj, [key, value]) => {
+          return Object.assign(obj, {
+            [key]: value,
+          });
+        }, {});
+    },
+    getIdsByTagId(): (tagId: string) => Array<string> {
       return (tagId: string) => {
-        return Object.keys(state.flashcards).filter((id) =>
-          state.flashcards[id].tags.includes(tagId)
+        return Object.keys(this.flashcards).filter((id) =>
+          this.flashcards[id].tags.includes(tagId)
         );
       };
     },
-    filterByTag: (state) => {
+    filterByTag(): (tagIds: Array<string>) => Array<string> {
       return (tagIds: Array<string>) => {
-        return Object.keys(state.flashcards).filter((id) =>
-          state.flashcards[id].tags.some((item) => tagIds.includes(item))
+        return Object.keys(this.flashcards).filter((id) =>
+          this.flashcards[id].tags.some((item) => tagIds.includes(item))
         );
       };
     },
-    tagSizes: (state) => {
+    tagSizes(): Record<string, number> {
       const retValue: Record<string, number> = {};
-      Object.values(state.flashcards).forEach(({ tags }) => {
+      Object.values(this.flashcards).forEach(({ tags }) => {
         tags.forEach((tagId) => {
           retValue[tagId] = retValue[tagId] ? retValue[tagId] + 1 : 1;
         });
