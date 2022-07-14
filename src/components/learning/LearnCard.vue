@@ -18,6 +18,7 @@ Potential ways to improve
 import { ref, computed } from "vue";
 import { useFlashcardsStore } from "src/stores/flashcards";
 import { useReviewsStore } from "src/stores/reviews";
+import FlashcardForm from "../memories/FlashcardForm.vue";
 
 const expanded = ref(false);
 const props = defineProps<{ tagId: string }>();
@@ -29,18 +30,21 @@ const reviewsStore = useReviewsStore();
 
 const currentIndex = ref(0);
 
+function next() {
+  expanded.value = false;
+  currentIndex.value += 1;
+}
+
 function thumbsDown(memoryId: string) {
   reviewsStore.create({
     memoryId,
     result: "BAD",
   });
-  expanded.value = false;
-  currentIndex.value += 1;
+  next();
 }
 
 function thumbsNeutral() {
-  expanded.value = false;
-  currentIndex.value += 1;
+  next();
 }
 
 function thumbsUp(memoryId: string) {
@@ -48,14 +52,12 @@ function thumbsUp(memoryId: string) {
     memoryId,
     result: "GOOD",
   });
-  expanded.value = false;
-  currentIndex.value += 1;
+  next();
 }
 
 function deleteMemory(memoryId: string) {
   flashcardsStore.delete(memoryId);
-  expanded.value = false;
-  currentIndex.value += 1;
+  next();
 }
 
 const count = computed(() => flashcardIds.length);
@@ -74,10 +76,34 @@ function postHide() {
   front.value = flashcardsStore.flashcards[flashcardId.value].front;
   back.value = flashcardsStore.flashcards[flashcardId.value].back;
 }
+
+const isEditing = ref(false);
+function edit() {
+  isEditing.value = true;
+}
+function finishEdit() {
+  isEditing.value = false;
+  /*
+    If I decide to go to the next flashcard after editing, then make
+    sure to call postHide.
+  */
+}
 </script>
 
 <template>
   <div v-if="finished">You finished!</div>
+  <div v-else-if="isEditing">
+    <q-btn
+      padding="none"
+      flat
+      round
+      color="primary"
+      icon="r_arrow_back"
+      class="back-button"
+      @click="finishEdit"
+    ></q-btn>
+    <FlashcardForm :initialFlashcardId="flashcardId" />
+  </div>
   <template v-else>
     <p>{{ textCurrentFlashcard }}</p>
     <q-card flat bordered class="flashcard-text">
@@ -108,7 +134,6 @@ function postHide() {
             <q-space></q-space>
           </q-card-section>
           <q-card-actions>
-            <q-btn flat round color="dark" icon="r_edit"></q-btn>
             <q-btn
               flat
               round
@@ -117,6 +142,7 @@ function postHide() {
               @click="deleteMemory(flashcardId)"
             ></q-btn>
             <q-space></q-space>
+            <q-btn flat round color="dark" icon="r_edit" @click="edit"></q-btn>
             <q-btn
               flat
               round
